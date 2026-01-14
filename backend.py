@@ -16,6 +16,7 @@ class connection:
             )
          
         self.debugging_statement("Connected to database.")
+
         return pyodbc.connect(cs)
     
     def get_all_date_bookings(self, date:str): # Date format: YYYY/MM/DD
@@ -39,11 +40,31 @@ class connection:
         Array format: [[Name, Status (e.g.: student), Next Booking String]]
         """
 
-    def add_user(self, information:dict): # Dictionary IDs: Name, Email, Phone, studentType, imagePath
-        # TODO: Implement
+    def add_user(self, information:dict): # Dictionary IDs: First Name, Last Name, Email, Phone, User Type, Image Title
         """
-        Adds a user to the user table
+        Adds a user to the user table. Where value is not provided, pass "None" in.
         """
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT userID FROM dbo.Users ORDER BY userID DESC")
+
+                past_user_ID = cursor.fetchone()
+                self.debugging_statement(f"{past_user_ID = }")
+
+                if past_user_ID != None:
+                    user_ID = int(past_user_ID[0]) + 1
+                else:
+                    user_ID = 1
+
+                SQL_statement = f"INSERT INTO dbo.Users VALUES ('{user_ID}', '{information["First Name"]}', '{information["Last Name"]}', '{information["User Type"]}', '{information["Image Title"]}', '{information["Email"]}', '{information["Phone"]}')"
+                self.debugging_statement(f"{SQL_statement = }")
+
+                cursor.execute(SQL_statement)
+            else:
+                raise Exception("ERROR: Could not connect to database")
+
 
     def get_all_user_cars(self, userID:str):
         # TODO: Implement
@@ -151,4 +172,11 @@ class connection:
 if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
-    debugger.connect()
+    debugger.add_user({
+        "First Name": "George",
+        "Last Name": "Cooke",
+        "User Type": "Student",
+        "Image Title": "None",
+        "Email": "25cookeg899@collyers.ac.uk",
+        "Phone": "None"
+        })
