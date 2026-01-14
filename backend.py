@@ -141,6 +141,22 @@ class connection:
         Checks the username and password to see if they match, returns true or false
         """
 
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT userPassword from dbo.Users WHERE email = ?", (email))
+                correct_password = cursor.fetchone()
+
+                self.debugging_statement(f"{correct_password = }")
+
+                if password == correct_password[0]:
+                    return True
+                else:
+                    return False
+            else:
+                raise Exception("ERROR: Could not connect to database")
+
     def add_user_car(self, userID:str, carDetails:dict):
         # TODO: Implement
         """
@@ -209,4 +225,4 @@ class connection:
 if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
-    debugger.update_user_password(1, "NewPassword")
+    print(debugger.check_user_password("25cookeg899@collyers.ac.uk", "NewPassword"))
