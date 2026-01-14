@@ -26,12 +26,16 @@ class connection:
         Array format: [[BookingID, User Name, User Status (e.g.: student)], ]
         """
 
-    def __generate_next_booking_string(self, type:str, startDate:str, endDate:str=None):
+    def __generate_next_booking_string(self, bookingType:str, startDate:str, endDate:str=None):
         # TODO: Implement
         """
         Used within the library to generate the strings used to describe booking dates.
         Example output: Jan 5th 2026 - Feb 13th 2026 (Current)
         """
+        self.debugging_statement(f"{bookingType = }")
+        self.debugging_statement(f"{startDate = }")
+        self.debugging_statement(f"{endDate = }")
+
         return "PENDING IMPLEMENTATION"
 
     def get_all_users(self, type:list = ["STUDENT", "STAFF", "VISITOR"]):
@@ -122,7 +126,6 @@ class connection:
         """
 
     def update_user_password(self, userID:str, newPassword:str):
-        # TODO: Implement
         """
         Updates the password of the relevant user to the one provided in the users table
         """
@@ -136,7 +139,6 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
             
     def check_user_password(self, email:str, password:str):
-        # TODO: Implement
         """
         Checks the username and password to see if they match, returns true or false
         """
@@ -163,11 +165,37 @@ class connection:
         Adds a car to the car table associated with the relevant user and with the details provided
         """
 
-    def add_user_booking(self, userID:str, bookingDetails:dict): # Dictionary IDs: bookingType, startDate, endDate
-        # TODO: Implement
+    def add_user_booking(self, bookingDetails:dict): # Dictionary IDs: userID, Booking Type, Start Date, End Date
         """
         Adds a booking to the bookings table with the provided details and userID
         """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT bookingID FROM dbo.Bookings ORDER BY userID DESC")
+
+                past_booking_ID = cursor.fetchone()
+                self.debugging_statement(f"{past_booking_ID = }")
+
+                if past_booking_ID != None:
+                    booking_ID = int(past_booking_ID[0]) + 1
+                else:
+                    booking_ID = 1
+
+                start_date = bookingDetails["Start Date"]
+                start_date = f"{start_date[-4:]}{start_date[3:5]}{start_date[0:2]}"
+                self.debugging_statement(f"{start_date = }")
+
+                end_date = bookingDetails["End Date"]
+                if end_date != None:
+                    end_date = f"{end_date[-4:]}{end_date[3:5]}{end_date[0:2]}"
+                self.debugging_statement(f"{end_date = }")
+
+                cursor.execute("INSERT INTO dbo.Bookings VALUES (?, ?, ?, ?, ?)", (booking_ID, bookingDetails["userID"], bookingDetails["Booking Type"].upper(), start_date, end_date))
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def delete_booking(self, bookingID:str):
         # TODO: Implement
@@ -225,4 +253,9 @@ class connection:
 if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
-    print(debugger.check_user_password("25cookeg899@collyers.ac.uk", "NewPassword"))
+    debugger.add_user_booking({
+        "userID": 1,
+        "Booking Type": "UNLIMITED",
+        "Start Date": "01/01/2026",
+        "End Date": None 
+        })
