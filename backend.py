@@ -89,7 +89,6 @@ class connection:
             else:
                 raise Exception("ERROR: Could not connect to database")
 
-
     def get_all_user_cars(self, userID:str):
         # TODO: Implement
         """
@@ -126,6 +125,20 @@ class connection:
         # TODO: Implement
         """
         Updates the password of the relevant user to the one provided in the users table
+        """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("UPDATE dbo.Users SET userPassword = ? WHERE userID = ?", (newPassword, userID))
+            else:
+                raise Exception("ERROR: Could not connect to database")
+            
+    def check_user_password(self, email:str, password:str):
+        # TODO: Implement
+        """
+        Checks the username and password to see if they match, returns true or false
         """
 
     def add_user_car(self, userID:str, carDetails:dict):
@@ -196,4 +209,4 @@ class connection:
 if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
-    print(debugger.get_all_users())
+    debugger.update_user_password(1, "NewPassword")
