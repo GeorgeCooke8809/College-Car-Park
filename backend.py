@@ -32,15 +32,35 @@ class connection:
         Used within the library to generate the strings used to describe booking dates.
         Example output: Jan 5th 2026 - Feb 13th 2026 (Current)
         """
+        return "PENDING IMPLEMENTATION"
 
     def get_all_users(self, type:list = ["STUDENT", "STAFF", "VISITOR"]):
         # TODO: Implement
         """
         Gets a list of all users of the system and returns them as a 2D array.
-        Array format: [[Name, Status (e.g.: student), Next Booking String]]
+        Array format: [[userID, fName, lName, userType (e.g.: student), Next Booking String]]
         """
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
 
-    def add_user(self, information:dict): # Dictionary IDs: First Name, Last Name, Email, Phone, User Type, Image Title
+                cursor.execute("SELECT userID, fName, lName, userType FROM dbo.Users ORDER BY fName ASC")
+
+                users_temp = cursor.fetchall()
+                users = []
+
+                for user in users_temp:
+                    today = datetime.date.today().strftime("%Y/%m/%d")
+
+                    cursor.execute(f"SELECT bookingType, startDate, endDate FROM dbo.Bookings WHERE startDate >={today} ORDER BY startDate ASC")
+                    booking_info = cursor.fetchone()
+
+                    user.append(self.__generate_next_booking_string(booking_info[0], booking_info[1], booking_info[2]))
+                    users.append(user)
+            else:
+                raise Exception("ERROR: Could not connect to database")
+
+    def add_user(self, information:dict): # Dictionary IDs: First Name, Last Name, Email, Password, Phone, User Type, Image Title
         """
         Adds a user to the user table. Where value is not provided, pass "None" in.
         """
@@ -58,10 +78,7 @@ class connection:
                 else:
                     user_ID = 1
 
-                SQL_statement = f"INSERT INTO dbo.Users VALUES ('{user_ID}', '{information["First Name"]}', '{information["Last Name"]}', '{information["User Type"]}', '{information["Image Title"]}', '{information["Email"]}', '{information["Phone"]}')"
-                self.debugging_statement(f"{SQL_statement = }")
-
-                cursor.execute(SQL_statement)
+                cursor.execute("INSERT INTO dbo.Users VALUES (?, ?, ?, ?, ?, ?, ?, ?)", (user_ID, information["First Name"], information["Last Name"], information["User Type"], information["Image Title"], information["Email"], information["Password"], information["Phone"]))
             else:
                 raise Exception("ERROR: Could not connect to database")
 
@@ -176,7 +193,8 @@ if __name__ == "__main__":
         "First Name": "George",
         "Last Name": "Cooke",
         "User Type": "Student",
-        "Image Title": "None",
+        "Image Title": None,
         "Email": "25cookeg899@collyers.ac.uk",
-        "Phone": "None"
+        "Password": "Password",
+        "Phone": None
         })
