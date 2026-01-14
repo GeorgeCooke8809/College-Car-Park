@@ -35,7 +35,6 @@ class connection:
         return "PENDING IMPLEMENTATION"
 
     def get_all_users(self, type:list = ["STUDENT", "STAFF", "VISITOR"]):
-        # TODO: Implement
         """
         Gets a list of all users of the system and returns them as a 2D array.
         Array format: [[userID, fName, lName, userType (e.g.: student), Next Booking String]]
@@ -44,25 +43,33 @@ class connection:
             if connection is not None:
                 cursor = connection.cursor()
 
-                cursor.execute("SELECT userID, fName, lName, userType FROM dbo.Users ORDER BY fName ASC")
+                cursor.execute("SELECT userID, fName, lName, userType FROM dbo.Users ORDER BY fName, lName, userID ASC")
 
                 users_temp = cursor.fetchall()
                 users = []
 
                 for user in users_temp:
-                    today = datetime.date.today().strftime("%Y/%m/%d")
+                    user = [elem for elem in user]
+                    today = datetime.date.today().strftime("%Y%m%d")
 
-                    cursor.execute(f"SELECT bookingType, startDate, endDate FROM dbo.Bookings WHERE startDate >={today} ORDER BY startDate ASC")
+                    self.debugging_statement(f"{today = }")
+
+                    cursor.execute(f"SELECT bookingType, startDate, endDate FROM dbo.Bookings WHERE startDate >= '{today}' ORDER BY startDate ASC")
                     booking_info = cursor.fetchone()
 
-                    user.append(self.__generate_next_booking_string(booking_info[0], booking_info[1], booking_info[2]))
+                    if booking_info != None:
+                        user.append(self.__generate_next_booking_string(booking_info[0], booking_info[1], booking_info[2]))
+                    else:
+                        user.append("No Pending Bookings")
                     users.append(user)
+
+                return users
             else:
                 raise Exception("ERROR: Could not connect to database")
 
     def add_user(self, information:dict): # Dictionary IDs: First Name, Last Name, Email, Password, Phone, User Type, Image Title
         """
-        Adds a user to the user table. Where value is not provided, pass "None" in.
+        Adds a user to the user table. Where value is not provided, pass None in.
         """
         with self.connect() as connection:
             if connection is not None:
@@ -189,12 +196,4 @@ class connection:
 if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
-    debugger.add_user({
-        "First Name": "George",
-        "Last Name": "Cooke",
-        "User Type": "Student",
-        "Image Title": None,
-        "Email": "25cookeg899@collyers.ac.uk",
-        "Password": "Password",
-        "Phone": None
-        })
+    print(debugger.get_all_users())
