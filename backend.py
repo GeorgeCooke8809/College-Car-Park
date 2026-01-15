@@ -15,7 +15,7 @@ class connection:
                 "Trusted_Connection=yes;"
             )
          
-        self.debugging_statement("Connected to database.")
+        self.debugging_statement("Connected to database...")
 
         return pyodbc.connect(cs)
     
@@ -32,11 +32,41 @@ class connection:
         Used within the library to generate the strings used to describe booking dates.
         Example output: Jan 5th 2026 - Feb 13th 2026 (Current)
         """
+
         self.debugging_statement(f"{bookingType = }")
+
         self.debugging_statement(f"{startDate = }")
+
+        today = datetime.date.today()
+        state = ""
+        if startDate <= today:
+            if endDate != None:
+                if endDate >= today:
+                    state = " (Current)"
+
+
+        start_date_readable = startDate.strftime("%d/%m/%Y")
+        self.debugging_statement(f"{start_date_readable = }")
+
         self.debugging_statement(f"{endDate = }")
 
-        return "PENDING IMPLEMENTATION"
+        if endDate != None:
+            end_date_readable = endDate.strftime("%d/%m/%Y")
+            self.debugging_statement(f"{end_date_readable = }")
+
+        if bookingType == "UNLIMITED":
+            return f"Unlimited Access From {start_date_readable}{state}"
+        elif bookingType == "DAY":
+            if endDate >= today:
+                return f"Day Pass For {start_date_readable}{state}"
+            else:
+                return "No Pending Bookings"
+        elif bookingType == "SEASON":
+            if endDate >= today:
+                return f"Season Pass From {start_date_readable} to {end_date_readable}{state}"
+            else:
+                    return "No Pending Bookings"
+
 
     def get_all_users(self, type:list = ["STUDENT", "STAFF", "VISITOR"]):
         """
@@ -58,7 +88,7 @@ class connection:
 
                     self.debugging_statement(f"{today = }")
 
-                    cursor.execute(f"SELECT bookingType, startDate, endDate FROM dbo.Bookings WHERE startDate >= '{today}' ORDER BY startDate ASC")
+                    cursor.execute("SELECT bookingType, startDate, endDate FROM dbo.Bookings WHERE (startDate <= ? OR endDate = Null) AND userID = ? ORDER BY startDate ASC", (today, user[0]))
                     booking_info = cursor.fetchone()
 
                     if booking_info != None:
@@ -74,6 +104,16 @@ class connection:
     def add_user(self, information:dict): # Dictionary IDs: First Name, Last Name, Email, Password, Phone, User Type, Image Title
         """
         Adds a user to the user table. Where value is not provided, pass None in.
+        Sample information dictionary:
+        {
+        "First Name": "Akil",
+        "Last Name": "Rameez",
+        "User Type": "Student",
+        "Image Title": None,
+        "Email": "25cookeg899@collyers.ac.uk",
+        "Password": "Password",
+        "Phone": None
+        }
         """
         with self.connect() as connection:
             if connection is not None:
@@ -251,11 +291,60 @@ class connection:
             print(f"\033[96mDEBUGGING - {text} \033[0m")
 
 if __name__ == "__main__":
-    # Enter debugging
+    # Enter debugging#
+    # TODO: Test generating booking string
     debugger = connection(debugging=True)
+
+
+    debugger.add_user({
+        "First Name": "Akil",
+        "Last Name": "Rameez",
+        "User Type": "Student",
+        "Image Title": None,
+        "Email": "25cookeg899@collyers.ac.uk",
+        "Password": "Password",
+        "Phone": None
+        })
+    
+    debugger.add_user({
+        "First Name": "George",
+        "Last Name": "Cooke",
+        "User Type": "Student",
+        "Image Title": None,
+        "Email": "25cookeg899@collyers.ac.uk",
+        "Password": "Password",
+        "Phone": None
+        })
+    
+    debugger.add_user({
+        "First Name": "Olly",
+        "Last Name": "Kitson",
+        "User Type": "Student",
+        "Image Title": None,
+        "Email": "25cookeg899@collyers.ac.uk",
+        "Password": "Password",
+        "Phone": None
+        })
+
     debugger.add_user_booking({
         "userID": 1,
+        "Booking Type": "DAY",
+        "Start Date": "14/01/2026",
+        "End Date": "14/01/2026"
+    })
+
+    debugger.add_user_booking({
+        "userID": 2,
         "Booking Type": "UNLIMITED",
+        "Start Date": "16/01/2026",
+        "End Date": None
+    })
+
+    debugger.add_user_booking({
+        "userID": 3,
+        "Booking Type": "SEASON",
         "Start Date": "01/01/2026",
-        "End Date": None 
-        })
+        "End Date": "14/01/2026"
+    })
+    
+    print(debugger.get_all_users())
