@@ -20,7 +20,7 @@ class connection:
         return pyodbc.connect(cs)
     
     def get_all_date_bookings(self, date:str): # Date format: YYYY/MM/DD
-        # TODO: Implement
+        # TODO: Implement get_all_date_bookings
         """
         Gets all bookings for the specified date and returns them as a 2D array.
         Array format: [[BookingID, User Name, User Status (e.g.: student)], ]
@@ -133,14 +133,14 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def get_all_user_cars(self, userID:str):
-        # TODO: Implement
+        # TODO: Implement get_all_user_cars
         """
         Gets a list of all cars registered to a user.
         Array format: [[carID, Licence Plate, Make, Model, Image Path], ]
         """
 
     def get_all_user_bookings(self, userID:str):
-        # TODO: Implement
+        # TODO: Implement get_all_user_bookings
         """
         Gets a list of all bookings registered to a user where the end date is after the current date.
         Array format: [[BookingID, booking date string]]
@@ -152,14 +152,14 @@ class connection:
         return all_bookings[0]
     
     def get_user_profile_data(self, userID:str):
-        # TODO: Implement
+        # TODO: Implement get_user_profile_data
         """
         Gets all the data needed to display a user's profile and outputs it as a dictionary.
         Dictionary contents: name, status (e.g.: student), image path, email, phone
         """
 
     def edit_user(self, userID:str, updates:dict): # Dictionary IDs: Name, Email, Phone, studentType, imagePath
-        # TODO: Implement
+        # TODO: Implement edit_user
         """
         Edits any of the data included in the updates dictionary to the relevant user in the user table
         """
@@ -199,7 +199,7 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def add_user_car(self, userID:str, carDetails:dict):
-        # TODO: Implement
+        # TODO: Implement add_user_car
         """
         Adds a car to the car table associated with the relevant user and with the details provided
         """
@@ -245,26 +245,26 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def delete_booking(self, bookingID:str):
-        # TODO: Implement
+        # TODO: Implement delete_booking
         """
         Deletes a booking from the booking table with the provided bookingID
         """
 
     def generate_ticket_PDF(self, bookingID:str):
-        # TODO: Implement
+        # TODO: Implement generate_ticket_PDF
         """
         Generates a PDF that can be printed with all the relevant data about the booking provided
         """
 
     def get_all_pending_requests(self):
-        # TODO: Implement
+        # TODO: Implement get_all_pending_requests
         """
         Returns a 2D array of all pending requests.
         Array Format: [[Request ID, Student Name, Student Status (e.g.: student), Date string], ]
         """
 
     def approve_booking_request(self, requestID:str):
-        # TODO: Implement
+        # TODO: Implement approve_booking_request
         """
         Marks the request with the relevant ID as approved and copies its data to the bookings table using self.add_user_booking
         """
@@ -356,7 +356,7 @@ class connection:
             print(f"\033[96mDEBUGGING - {text} \033[0m")
 
 if __name__ == "__main__":
-    # Enter debugging#
+    # Enter debugging
     debugger = connection(debugging=True)
 
     debugger.deny_booking_request(1)
