@@ -257,11 +257,41 @@ class connection:
         """
 
     def get_all_pending_requests(self):
-        # TODO: Implement get_all_pending_requests
         """
         Returns a 2D array of all pending requests.
         Array Format: [[Request ID, Student Name, Student Status (e.g.: student), Date string], ]
         """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+                today = datetime.date.today()
+                today_sql = today.strftime("%Y%m%d")
+
+                cursor.execute("SELECT requestID, userID, requestType, startDate, endDate FROM dbo.Requests WHERE requestStatus = 'PENDING' AND endDate >= ? ORDER BY startDate ASC", (today_sql))
+
+                requests_temp = cursor.fetchall()
+
+                requests = []
+
+                for request in requests_temp:
+                    cursor.execute("SELECT fName, lName, userType FROM dbo.Users WHERE userID = ?", (request[1]))
+                    user_info = cursor.fetchone()
+
+                    user_name = f"{user_info[0]} {user_info[1]}"
+                    user_type = user_info[2]
+
+                    today = datetime.date.today().strftime("%Y%m%d")
+
+                    self.debugging_statement(f"{today = }")
+
+                    date_string = self.__generate_next_booking_string(request[2], request[3], request[4])
+
+                    requests.append([request[0], user_name, user_type, date_string])
+
+                return requests
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def approve_booking_request(self, requestID:str):
         # TODO: Implement approve_booking_request
@@ -359,4 +389,25 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
 
-    debugger.deny_booking_request(1)
+    """debugger.request_booking({
+            "userID": 2,
+            "Booking Type": "SEASON",
+            "Start Date": "01/01/2026",
+            "End Date": "14/01/2026"
+        })
+    
+    debugger.request_booking({
+            "userID": 1,
+            "Booking Type": "SEASON",
+            "Start Date": "01/01/2026",
+            "End Date": "15/01/2026"
+        })
+    
+    debugger.request_booking({
+            "userID": 3,
+            "Booking Type": "SEASON",
+            "Start Date": "01/01/2026",
+            "End Date": "16/01/2026"
+        })"""
+    
+    print(debugger.get_all_pending_requests())
