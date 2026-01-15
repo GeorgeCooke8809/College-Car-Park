@@ -207,13 +207,21 @@ class connection:
     def add_user_booking(self, bookingDetails:dict): # Dictionary IDs: userID, Booking Type, Start Date, End Date
         """
         Adds a booking to the bookings table with the provided details and userID
+
+        Dictionary example:
+        {
+            "userID": 3,
+            "Booking Type": "SEASON",
+            "Start Date": "01/01/2026",
+            "End Date": "14/01/2026"
+        }
         """
 
         with self.connect() as connection:
             if connection is not None:
                 cursor = connection.cursor()
 
-                cursor.execute("SELECT bookingID FROM dbo.Bookings ORDER BY userID DESC")
+                cursor.execute("SELECT bookingID FROM dbo.Bookings ORDER BY bookingID DESC")
 
                 past_booking_ID = cursor.fetchone()
                 self.debugging_statement(f"{past_booking_ID = }")
@@ -267,11 +275,46 @@ class connection:
         Marks the relevant booking as denied
         """
 
-    def request_booking(self, userID:str, bookingDetails:dict): # Dictionary IDs: bookingType, startDate, endDate
+    def request_booking(self, requestDetails:dict): # Dictionary IDs: userID, Booking Type, Start Date, End Date
         # TODO: Implement
         """
         Adds a booking to the requests table with the provided details and userID to be later approved
+
+        Dictionary example:
+        {
+            "userID": 3,
+            "Booking Type": "SEASON",
+            "Start Date": "01/01/2026",
+            "End Date": "14/01/2026"
+        }
         """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT requestID FROM dbo.Requests ORDER BY requestID DESC")
+
+                past_request_ID = cursor.fetchone()
+                self.debugging_statement(f"{past_request_ID = }")
+
+                if past_request_ID != None:
+                    request_ID = int(past_request_ID[0]) + 1
+                else:
+                    request_ID = 1
+
+                start_date = requestDetails["Start Date"]
+                start_date = f"{start_date[-4:]}{start_date[3:5]}{start_date[0:2]}"
+                self.debugging_statement(f"{start_date = }")
+
+                end_date = requestDetails["End Date"]
+                if end_date != None:
+                    end_date = f"{end_date[-4:]}{end_date[3:5]}{end_date[0:2]}"
+                self.debugging_statement(f"{end_date = }")
+
+                cursor.execute("INSERT INTO dbo.Requests VALUES (?, ?, ?, ?, ?, 'PENDING')", (request_ID, requestDetails["userID"], requestDetails["Booking Type"].upper(), start_date, end_date))
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def get_maximum_capacity(self):
         # TODO: Implement
@@ -312,6 +355,9 @@ if __name__ == "__main__":
     # Enter debugging#
     debugger = connection(debugging=True)
 
-    debugger.update_maximum_capacity(200)
-    
-    print(debugger.get_maximum_capacity())
+    debugger.request_booking({
+            "userID": 1,
+            "Booking Type": "SEASON",
+            "Start Date": "01/01/2026",
+            "End Date": "16/01/2026"
+        })
