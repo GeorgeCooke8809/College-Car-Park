@@ -27,7 +27,6 @@ class connection:
         """
 
     def __generate_next_booking_string(self, bookingType:str, startDate:str, endDate:str=None):
-        # TODO: Implement
         """
         Used within the library to generate the strings used to describe booking dates.
         Example output: Jan 5th 2026 - Feb 13th 2026 (Current)
@@ -280,11 +279,30 @@ class connection:
         References adminSettings.json to find and return the maximum capacity of the car park
         """
 
+        with open("adminSettings.json", "r") as file:
+            data = json.load(file)
+
+        self.debugging_statement(f"{data = }")
+
+        return data["max capacity"]
+
     def update_maximum_capacity(self, newCapacity:int):
         # TODO: Implement
         """
         References adminSettings.json to update the maximum capacity of the car park
         """
+
+        with open("adminSettings.json", "r+") as file:
+            data = json.load(file)
+
+        data["max capacity"] = newCapacity
+        self.debugging_statement(f"{data = }")
+
+        json_string = json.dumps(data, indent = 2)
+        self.debugging_statement(f"{json_string = }")
+
+        with open("adminSettings.json", "w") as file:
+            file.write(json_string)
     
     def debugging_statement(self, text):
         if self.debugging:
@@ -292,59 +310,8 @@ class connection:
 
 if __name__ == "__main__":
     # Enter debugging#
-    # TODO: Test generating booking string
     debugger = connection(debugging=True)
 
-
-    debugger.add_user({
-        "First Name": "Akil",
-        "Last Name": "Rameez",
-        "User Type": "Student",
-        "Image Title": None,
-        "Email": "25cookeg899@collyers.ac.uk",
-        "Password": "Password",
-        "Phone": None
-        })
+    debugger.update_maximum_capacity(200)
     
-    debugger.add_user({
-        "First Name": "George",
-        "Last Name": "Cooke",
-        "User Type": "Student",
-        "Image Title": None,
-        "Email": "25cookeg899@collyers.ac.uk",
-        "Password": "Password",
-        "Phone": None
-        })
-    
-    debugger.add_user({
-        "First Name": "Olly",
-        "Last Name": "Kitson",
-        "User Type": "Student",
-        "Image Title": None,
-        "Email": "25cookeg899@collyers.ac.uk",
-        "Password": "Password",
-        "Phone": None
-        })
-
-    debugger.add_user_booking({
-        "userID": 1,
-        "Booking Type": "DAY",
-        "Start Date": "14/01/2026",
-        "End Date": "14/01/2026"
-    })
-
-    debugger.add_user_booking({
-        "userID": 2,
-        "Booking Type": "UNLIMITED",
-        "Start Date": "16/01/2026",
-        "End Date": None
-    })
-
-    debugger.add_user_booking({
-        "userID": 3,
-        "Booking Type": "SEASON",
-        "Start Date": "01/01/2026",
-        "End Date": "14/01/2026"
-    })
-    
-    print(debugger.get_all_users())
+    print(debugger.get_maximum_capacity())
