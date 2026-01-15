@@ -270,13 +270,19 @@ class connection:
         """
 
     def deny_booking_request(self, requestID:str):
-        # TODO: Implement
         """
         Marks the relevant booking as denied
         """
 
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("UPDATE dbo.Requests SET requestStatus = 'DENIED' WHERE requestID = ?", (requestID))
+            else:
+                raise Exception("ERROR: Could not connect to database")
+
     def request_booking(self, requestDetails:dict): # Dictionary IDs: userID, Booking Type, Start Date, End Date
-        # TODO: Implement
         """
         Adds a booking to the requests table with the provided details and userID to be later approved
 
@@ -317,7 +323,6 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def get_maximum_capacity(self):
-        # TODO: Implement
         """
         References adminSettings.json to find and return the maximum capacity of the car park
         """
@@ -330,7 +335,6 @@ class connection:
         return data["max capacity"]
 
     def update_maximum_capacity(self, newCapacity:int):
-        # TODO: Implement
         """
         References adminSettings.json to update the maximum capacity of the car park
         """
@@ -355,9 +359,4 @@ if __name__ == "__main__":
     # Enter debugging#
     debugger = connection(debugging=True)
 
-    debugger.request_booking({
-            "userID": 1,
-            "Booking Type": "SEASON",
-            "Start Date": "01/01/2026",
-            "End Date": "16/01/2026"
-        })
+    debugger.deny_booking_request(1)
