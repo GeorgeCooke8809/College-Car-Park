@@ -311,10 +311,32 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def approve_booking_request(self, requestID:str):
-        # TODO: Implement approve_booking_request
         """
         Marks the request with the relevant ID as approved and copies its data to the bookings table using self.add_user_booking
         """
+
+        with self.connect() as connection:
+            if connection is not None:
+                today = datetime.date.today()
+
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT userID, requestType, startDate, endDate FROM dbo.Requests WHERE requestID = ?", (requestID))
+                request_info = cursor.fetchone()
+
+                if request_info[3] >= today:
+                    self.add_user_booking({
+                                            "userID": request_info[0],
+                                            "Booking Type": request_info[1],
+                                            "Start Date": request_info[2].strftime("%d/%m/%Y"),
+                                            "End Date": request_info[3].strftime("%d/%m/%Y")
+                                        })
+
+                    cursor.execute("UPDATE dbo.Requests SET requestStatus = 'APPROVED' WHERE requestID = ?", (requestID))
+                else:
+                    self.debugging_statement("WARNING: Booking already passed.")
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def deny_booking_request(self, requestID:str):
         """
@@ -406,4 +428,4 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
     
-    print(debugger.get_user_profile_data(1))
+    debugger.approve_booking_request(2)
