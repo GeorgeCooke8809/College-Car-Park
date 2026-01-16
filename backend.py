@@ -151,12 +151,29 @@ class connection:
         
         return all_bookings[0]
     
-    def get_user_profile_data(self, userID:str):
-        # TODO: Implement get_user_profile_data
+    def get_user_profile_data(self, userID:int):
         """
         Gets all the data needed to display a user's profile and outputs it as a dictionary.
         Dictionary contents: name, status (e.g.: student), image path, email, phone
         """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT fName, lName, userType, profilePictureTitle, email, phone FROM dbo.Users WHERE userID = ?", (userID))
+                user_info = cursor.fetchone()
+
+                return {
+                    "First Name": user_info[0],
+                    "Last Name": user_info[1],
+                    "User Type": user_info[2],
+                    "Profile Picture": user_info[3],
+                    "Email": user_info[4],
+                    "Phone": user_info[5],
+                }
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def edit_user(self, userID:str, updates:dict): # Dictionary IDs: Name, Email, Phone, studentType, imagePath
         # TODO: Implement edit_user
@@ -388,26 +405,5 @@ class connection:
 if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
-
-    """debugger.request_booking({
-            "userID": 2,
-            "Booking Type": "SEASON",
-            "Start Date": "01/01/2026",
-            "End Date": "14/01/2026"
-        })
     
-    debugger.request_booking({
-            "userID": 1,
-            "Booking Type": "SEASON",
-            "Start Date": "01/01/2026",
-            "End Date": "15/01/2026"
-        })
-    
-    debugger.request_booking({
-            "userID": 3,
-            "Booking Type": "SEASON",
-            "Start Date": "01/01/2026",
-            "End Date": "16/01/2026"
-        })"""
-    
-    print(debugger.get_all_pending_requests())
+    print(debugger.get_user_profile_data(1))
