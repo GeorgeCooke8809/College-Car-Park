@@ -242,11 +242,36 @@ class connection:
             else:
                 raise Exception("ERROR: Could not connect to database")
 
-    def add_user_car(self, userID:str, carDetails:dict):
-        # TODO: Implement add_user_car
+    def add_user_car(self, carDetails:dict):
         """
-        Adds a car to the car table associated with the relevant user and with the details provided
+        Adds a car to the car table associated with the relevant user and with the details provided.
+        Sample dictionary:
+        {
+            "userID": 1,
+            "Registration": "PE14 WUA",
+            "Make": "Aston Martin",
+            "Model": "DB9",
+            "Image Title": None
+        }
         """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT carID FROM dbo.Cars ORDER BY carID DESC")
+
+                past_car_ID = cursor.fetchone()
+                self.debugging_statement(f"{past_car_ID = }")
+
+                if past_car_ID != None:
+                    car_ID = int(past_car_ID[0]) + 1
+                else:
+                    car_ID = 1
+
+                cursor.execute("INSERT INTO dbo.Cars VALUES(?, ?, ?, ?, ?, ?)", (car_ID, carDetails["userID"], carDetails["Registration"], carDetails["Make"], carDetails["Model"], carDetails["Image Title"]))
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def add_user_booking(self, bookingDetails:dict): # Dictionary IDs: userID, Booking Type, Start Date, End Date
         """
@@ -455,4 +480,10 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
     
-    print(debugger.get_all_date_bookings("14/01/2026"))
+    debugger.add_user_car({
+            "userID": 1,
+            "Registration": "PE14 WUA",
+            "Make": "Aston Martin",
+            "Model": "DB9",
+            "Image Title": None
+        })
