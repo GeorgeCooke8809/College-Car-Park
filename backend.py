@@ -19,12 +19,39 @@ class connection:
 
         return pyodbc.connect(cs)
     
-    def get_all_date_bookings(self, date:str): # Date format: YYYY/MM/DD
-        # TODO: Implement get_all_date_bookings
+    def get_all_date_bookings(self, date:str): # Date format: DD/MM/YYYY
         """
         Gets all bookings for the specified date and returns them as a 2D array.
         Array format: [[BookingID, User Name, User Status (e.g.: student)], ]
         """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+                sql_date = f"{date[-4:]}{date[3:5]}{date[0:2]}"
+
+                cursor.execute("SELECT bookingID, userID FROM dbo.Bookings WHERE (startDate <= ? AND endDate >= ?) OR (startDate <= ? AND bookingType = 'UNLIMITED')", (sql_date, sql_date, sql_date))
+
+                to_return_IDs = cursor.fetchall()
+
+                to_return_IDs_array = [item for item in to_return_IDs]
+
+                to_return_array = []
+
+                for index in to_return_IDs_array:
+                    temp = [index[0]]
+
+                    cursor.execute("SELECT fName, lName, userType FROM dbo.Users WHERE userID = ?", (index[1]))
+                    user_data = cursor.fetchone()
+
+                    temp.append(f"{user_data[0]} {user_data[1]}")
+                    temp.append(user_data[2])
+
+                    to_return_array.append(temp)
+
+                return to_return_array                
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def __generate_next_booking_string(self, bookingType:str, startDate:str, endDate:str=None):
         """
@@ -428,4 +455,4 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
     
-    debugger.approve_booking_request(2)
+    print(debugger.get_all_date_bookings("14/01/2026"))
