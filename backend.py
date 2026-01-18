@@ -347,10 +347,17 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def delete_booking(self, bookingID:str):
-        # TODO: Implement delete_booking
         """
         Deletes a booking from the booking table with the provided bookingID
         """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("DELETE FROM dbo.Bookings WHERE bookingID = ?", (bookingID))
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def generate_ticket_PDF(self, bookingID:str):
         # TODO: Implement generate_ticket_PDF
@@ -513,4 +520,4 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
     
-    print(debugger.get_all_user_bookings("1"))
+    print(debugger.delete_booking("2"))
