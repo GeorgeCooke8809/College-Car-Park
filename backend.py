@@ -160,11 +160,25 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def get_all_user_cars(self, userID:str):
-        # TODO: Implement get_all_user_cars
         """
         Gets a list of all cars registered to a user.
         Array format: [[carID, Licence Plate, Make, Model, Image Path], ]
         """
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT carID, registration, carMake, carModel, carPictureTitle FROM dbo.Cars WHERE userID = ?", (userID))
+
+                cars = []
+
+                for car in cursor.fetchall():
+                    temp = [elem for elem in car]
+                    cars.append(temp)
+
+                return cars
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def get_all_user_bookings(self, userID:str):
         # TODO: Implement get_all_user_bookings
@@ -480,10 +494,4 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
     
-    debugger.add_user_car({
-            "userID": 1,
-            "Registration": "PE14 WUA",
-            "Make": "Aston Martin",
-            "Model": "DB9",
-            "Image Title": None
-        })
+    print(debugger.get_all_user_cars("2"))
