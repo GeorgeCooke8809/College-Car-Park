@@ -181,11 +181,30 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def get_all_user_bookings(self, userID:str):
-        # TODO: Implement get_all_user_bookings
         """
         Gets a list of all bookings registered to a user where the end date is after the current date.
         Array format: [[BookingID, booking date string]]
         """
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+                
+                today = datetime.date.today()
+                today_sql = today.strftime("%Y%m%d")
+
+                cursor.execute("SELECT bookingID, bookingType, startDate, endDate FROM dbo.Bookings WHERE userID = ? AND (endDate >= ? OR bookingType = 'UNLIMITED')", (userID, today_sql))
+
+                bookings = []
+
+                for booking in cursor.fetchall():
+                    temp = [booking[0]]
+                    temp.append(self.__generate_next_booking_string(booking[1], booking[2], booking[3]))
+
+                    bookings.append(temp)
+
+                return bookings
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def get_next_user_booking(self, userID:str):
         all_bookings = self.get_all_user_bookings(userID)
@@ -494,4 +513,4 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
     
-    print(debugger.get_all_user_cars("2"))
+    print(debugger.get_all_user_bookings("1"))
