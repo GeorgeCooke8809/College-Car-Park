@@ -235,11 +235,30 @@ class connection:
             else:
                 raise Exception("ERROR: Could not connect to database")
 
-    def edit_user(self, userID:str, updates:dict): # Dictionary IDs: Name, Email, Phone, studentType, imagePath
-        # TODO: Implement edit_user
+    def edit_user(self, userID:str, fName: str = None, lName: str = None, userType: str = None, profilePictureTitle: str = None, email: str = None, phone: str = None):
         """
         Edits any of the data included in the updates dictionary to the relevant user in the user table
         """
+
+        with self.connect() as connection:
+                if connection is not None:
+                    cursor = connection.cursor()
+
+                    if fName != None:
+                        cursor.execute("UPDATE dbo.Users SET fName = ? WHERE userID = ?", (fName, userID))
+                    if lName != None:
+                        cursor.execute("UPDATE dbo.Users SET lName = ? WHERE userID = ?", (lName, userID))
+                    if userType != None:
+                        cursor.execute("UPDATE dbo.Users SET userType = ? WHERE userID = ?", (userType, userID))
+                    if profilePictureTitle != None:
+                        cursor.execute("UPDATE dbo.Users SET profilePictureTitle = ? WHERE userID = ?", (profilePictureTitle, userID))
+                    if email != None:
+                        cursor.execute("UPDATE dbo.Users SET email = ? WHERE userID = ?", (email, userID))
+                    if phone != None:
+                        cursor.execute("UPDATE dbo.Users SET phone = ? WHERE userID = ?", (phone, userID))
+                    
+                else:
+                    raise Exception("ERROR: Could not connect to database")
 
     def update_user_password(self, userID:str, newPassword:str):
         """
@@ -520,4 +539,12 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
     
-    print(debugger.delete_booking("2"))
+    debugger.edit_user(
+        userID=3,
+        fName="Oliver",
+        lName="Kitsonion",
+        userType="Visitor",
+        profilePictureTitle="idiot.png",
+        email="nah@gmail.com",
+        phone="07803 456789"
+    )
