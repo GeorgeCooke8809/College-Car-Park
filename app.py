@@ -2,6 +2,8 @@ import flask
 from flask import Flask, request
 from backend import connection
 
+# TODO: Disregard edit booking in design documents, direct users to delete and make new
+
 app = Flask(__name__)
 data = connection()
 
