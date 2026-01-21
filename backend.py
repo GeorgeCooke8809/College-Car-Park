@@ -1,6 +1,12 @@
 import pyodbc
 import json
 import datetime
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors as colours
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
+from reportlab.platypus import Spacer, Paragraph, Table, SimpleDocTemplate
 
 class connection:
     def __init__(self, debugging: bool = False):
@@ -384,6 +390,148 @@ class connection:
         Generates a PDF that can be printed with all the relevant data about the booking provided
         """
 
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT userID, bookingType, startDate, endDate FROM dbo.Bookings WHERE bookingID = ?", (bookingID))
+
+                booking_info = cursor.fetchone()
+
+                userID = booking_info[0]
+                bookingType = booking_info[1]
+
+                start_date_readable = booking_info[2].strftime("%B %d %Y")
+
+                if bookingType.upper() == "SEASON":
+                    end_date_readable = booking_info[3].strftime("%B %d %Y")
+
+                    date_string = f"{start_date_readable} to {end_date_readable}"
+                else:
+                    date_string = f"{start_date_readable}"
+
+                cursor.execute("SELECT fName, lName, userType FROM dbo.Users WHERE userID = ?", (userID))
+
+                user_info = cursor.fetchone()
+
+                name = f"{user_info[0]} {user_info[1]}"
+                userType = user_info[2]
+
+                cars = self.get_all_user_cars(userID=userID)
+            else:
+                raise Exception("ERROR: Could not connect to database")
+
+        doc = SimpleDocTemplate("Ticket.pdf", pagesize = A4)
+        doc_build_string = []
+
+        # Add the headers to the document (pass type and dates)
+        if bookingType.upper() == "DAY":
+            title = Paragraph(f"{bookingType.upper()} PASS", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=50
+            ))
+            date = Paragraph(f"{date_string.upper()}", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=29
+            ))
+
+            doc_build_string.extend([title, Spacer(1, 40), date])
+
+        elif bookingType.upper() == "SEASON":
+            title = Paragraph(f"{bookingType.upper()} PASS", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=35
+            ))
+            date = Paragraph(f"{date_string.upper()}", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=13
+            ))
+
+            doc_build_string.extend([title, Spacer(1, 30), date])
+
+        elif bookingType.upper() == "UNLIMITED":
+            title = Paragraph(f"{bookingType.upper()} PASS", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=30
+            ))
+            date = Paragraph(f"{date_string.upper()}", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=29
+            ))
+
+            doc_build_string.extend([title, Spacer(1, 25), date])
+
+
+        valid_for = Paragraph(f"VALID FOR:", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica",
+                fontSize=25
+            ))
+        doc_build_string.extend([Spacer(1, 60), valid_for])
+
+        user = Paragraph(f"{name}", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=40
+            ))
+        doc_build_string.extend([Spacer(1, 15), user])
+
+        user_type = Paragraph(f"{userType}", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica",
+                fontSize=22
+            ))
+        doc_build_string.extend([Spacer(1, 27), user_type])
+
+        valid_cars = Paragraph(f"VALID CARS:", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica",
+                fontSize=25
+            ))
+        doc_build_string.extend([Spacer(1, 55), valid_cars])
+
+        for car in cars:
+            registration = Paragraph(f"{car[1]}", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=40
+            ))
+
+            make = Paragraph(f"Make: <font fontname = 'Helvetica'>{car[2]}</font>", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=20
+            ))
+
+            model = Paragraph(f"Model: <font fontname = 'Helvetica'>{car[2]}</font>", style=ParagraphStyle(
+                "LeftAligned",
+                alignment=TA_LEFT,
+                fontName="Helvetica-Bold",
+                fontSize=20
+            ))
+
+            doc_build_string.extend([Spacer(1, 20), registration, Spacer(1, 30), make, Spacer(1, 10), model])
+
+        doc.build(doc_build_string)
+
     def get_all_pending_requests(self):
         """
         Returns a 2D array of all pending requests.
@@ -538,13 +686,5 @@ class connection:
 if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
-    
-    debugger.edit_user(
-        userID=3,
-        fName="Oliver",
-        lName="Kitsonion",
-        userType="Visitor",
-        profilePictureTitle="idiot.png",
-        email="nah@gmail.com",
-        phone="07803 456789"
-    )
+
+    debugger.generate_ticket_PDF(1)
