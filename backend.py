@@ -385,7 +385,8 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def generate_ticket_PDF(self, bookingID:str):
-        # TODO: Implement generate_ticket_PDF
+        # TODO: Make pretty,
+        # TODO: split into two functions,
         """
         Generates a PDF that can be printed with all the relevant data about the booking provided
         """
