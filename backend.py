@@ -75,6 +75,8 @@ class connection:
             if endDate != None:
                 if endDate >= today:
                     state = " (Current)"
+            else:
+                state = " (Current)"
 
 
         start_date_readable = startDate.strftime("%d/%m/%Y")
@@ -215,12 +217,15 @@ class connection:
     def get_next_user_booking(self, userID:str):
         all_bookings = self.get_all_user_bookings(userID)
         
-        return all_bookings[0]
+        try:
+            return all_bookings[0]
+        except:
+            return [0, "No Pending Bookings"]
     
     def get_user_profile_data(self, userID:int):
         """
         Gets all the data needed to display a user's profile and outputs it as a dictionary.
-        Dictionary contents: name, status (e.g.: student), image path, email, phone
+        Dictionary contents: name, status (e.g.: student), image path, email, phone, booking string
         """
 
         with self.connect() as connection:
@@ -230,6 +235,9 @@ class connection:
                 cursor.execute("SELECT fName, lName, userType, profilePictureTitle, email, phone FROM dbo.Users WHERE userID = ?", (userID))
                 user_info = cursor.fetchone()
 
+                next_booking = self.get_next_user_booking(userID)
+                booking_string = next_booking[1]
+
                 return {
                     "First Name": user_info[0],
                     "Last Name": user_info[1],
@@ -237,6 +245,7 @@ class connection:
                     "Profile Picture": user_info[3],
                     "Email": user_info[4],
                     "Phone": user_info[5],
+                    "Booking String": booking_string
                 }
             else:
                 raise Exception("ERROR: Could not connect to database")

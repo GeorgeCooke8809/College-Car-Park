@@ -1,0 +1,148 @@
+#columns{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+#left-column{
+    width: 70%;
+}
+
+#user-name{
+    font-size: 50px;
+    margin: 0px;
+}
+
+#user-type{
+    margin: 0px;
+
+    font-weight: normal;
+    font-size: 30px;
+}
+
+#next-booking{
+    display: flex;
+
+    font-size: 25px;
+    margin-top: 20px;
+}
+
+#bold-next-booking-heading{
+    font-weight: bold;
+    margin: 0px;
+    margin-right: 6px;
+    font-size: 25px;
+}
+
+.active-booking-string{
+    color: green;
+    font-size: 25px;
+    margin: 0px;
+
+}
+
+.inactive-booking-string{
+    color: black;
+    font-size: 25px;
+    margin: 0px;
+}
+
+#see-all-bookings{
+    font-size: 25px;
+
+    border-bottom: dotted;
+    border-width: 3px;
+    border-color: 97999e;
+    color: #97999e;
+    text-decoration: none;
+
+    margin: 0px;
+}
+
+#cars-header{
+    font-size: 25px;
+}
+
+.car-box{
+    display: flex;
+    justify-content: space-between;
+
+    border-radius: 2rem;
+    background-color: #b0bbe9;
+
+    padding: 10px 20px;
+
+    margin: 10px 0px;
+}
+
+.registration{
+    margin: 0px;
+    font-weight: bolder;
+    font-size: 40px;
+}
+
+.inline-car-box-text{
+    display: flex;
+}
+
+.car-info-header{
+    font-weight: bold;
+    margin-right: 5px;
+    margin: 0px;
+}
+
+.car-info-in{
+    margin: 0px;
+}
+
+.car-box-right{
+    display: flex;
+}
+
+.car-image{
+    height: 92px;
+    border-radius: 2rem;
+}
+
+.delete-car{
+    height: 92px;
+}
+
+#add-car-link{
+    text-decoration: none;
+}
+
+#add-car-border{
+    padding: 10px;
+
+    display: flex;
+    justify-content: center;
+
+    border: solid;
+    border-width: 5px;
+    border-color: #97999e;
+    border-radius: 2rem;
+}
+
+#add-car{
+    display: flex;
+}
+
+#add-car-image{
+    height: 50px;
+}
+
+#add-car-text{
+    color: #97999e;
+    font-size: 50px;
+    margin: 0px;
+    padding: 0px;
+    font-weight: bold;
+}
+
+
+#right-column{
+    width: 30%;
+    margin-top: 20px;
+    background-color: aqua;
+}

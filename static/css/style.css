@@ -119,12 +119,10 @@ p{
 */
 
 body{
-    margin: auto;
+    margin: 0px;
     margin-top: 95px;
     background-color: #ffffff;
     color: #000000;
-
-    max-width: 1300px;
     
     font-family: Arial, Helvetica, sans-serif;
 }

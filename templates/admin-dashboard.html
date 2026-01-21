@@ -71,7 +71,7 @@
             <div id="dashboard-current-bookings">
                 {% for booking in bookings %}
                     <div class="booking-box">
-                        <a href="404" class="booking-link">
+                        <a href="./admin-view-user?uid={{booking[0]}}" class="booking-link">
                             <h1>{{booking[1]}}</h1>
                             <h3>{{booking[2]}}</h3>
                         </a>

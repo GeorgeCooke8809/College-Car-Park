@@ -3,10 +3,10 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Collyer's Car Park - Admin Dashboard</title>
+        <title>Collyer's Car Park - Admin View User</title>
 
         <link rel="stylesheet" type="text/css" href="static/css/style.css">
-        <link rel="stylesheet" type="text/css" href="static/css/dashboard.css">
+        <link rel="stylesheet" type="text/css" href="static/css/view-user.css">
         <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
     </head>
 
@@ -17,8 +17,8 @@
 
                 <nav class="header-child-list">
                     <ul class="navigation-list">
-                        <li class="navigation-item"><a href="#" class="nav-button-current">Dashboard</a></li>
-                        <li class="navigation-item"><a href="./admin-users" class="nav-button">Users</a></li>
+                        <li class="navigation-item"><a href="./admin-dashboard" class="nav-button">Dashboard</a></li>
+                        <li class="navigation-item"><a href="./admin-users" class="nav-button-current">Users</a></li>
                         <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li>
                         <!-- TODO: Stretch target - <li class="navigation-item"><a href="blog-overviews.html" class="nav-button">Search</a></li> -->
 
@@ -47,37 +47,64 @@
         -->
 
         <section class="container">
-            <div id="dashboard-mini-settings">
-                <div id="date-select-divider">
-                    <input type="image" src="static/img/date_back.png" alt="submit" id="date_back" class="switch-date-button"> <!-- TODO: Add functionality to change date buttons -->
+           <div id="columns">
+                <div id="left-column"> <!-- The left hand column of the user profile page -->
+                    <h1 id="user-name">{{user_data["First Name"]}} {{user_data["Last Name"]}}</h1>
+                    <h3 id="user-type">{{user_data["User Type"]}}</h3>
 
-                    <p id="current_date">{{ current_date }}</p>
+                    <div id="next-booking">
+                        <p id="bold-next-booking-heading">Next Booking: </p>
 
-                    <input type="image" src="static/img/date_forward.png" alt="submit" id="date_forward" class="switch-date-button"> <!-- TODO: Add functionality to change date buttons -->
-                </div>
-
-                <div id="spaces-avail-display">
-                    <form id="spaces-in-use-form">
-                        <input type="number" id="edit_spaces_avail_entry">
-                        <input type="submit" id="submit-spaces_avail_entry" class="submit-button"> <!-- TODO: Add functionality to update spaces-->
-                    </form>
-
-                    <p id="spaces-text">{{current_spaces}}/{{maximum_spaces}} Spaces In Use</p>
-
-                    <input type="image" src="/static/img/edit.webp" alt="submit" name="editSpacesAvail" class="edit-button"> <!-- TODO: Implement functionality to show / hide edit spaces button, will require editing CSS with flask -->
-                </div>
-            </div>
-
-            <div id="dashboard-current-bookings">
-                {% for booking in bookings %}
-                    <div class="booking-box">
-                        <a href="404" class="booking-link">
-                            <h1>{{booking[1]}}</h1>
-                            <h3>{{booking[2]}}</h3>
-                        </a>
+                        {% if user_data["Booking String"][-1] == ")": %}
+                            <p class="active-booking-string">{{ user_data["Booking String"] }}</p>
+                        {% else: %}
+                            <p class="inactive-booking-string">{{ user_data["Booking String"] }}</p>
+                        {% endif %}
                     </div>
-                {% endfor %}
-            </div>
+
+                    <a href="404" id="see-all-bookings">See All Bookings</a> <!-- TODO: Add functionality to see all bookings link in user profile -->
+
+                    <h3 id="cars-header">Cars:</h3>
+
+                    <div id="cars-collection">
+                        {% for car in user_cars: %}
+                            <div class="car-box">
+                                <div class="car-box-left">
+                                    <p class="registration">{{ car[1] }}</p>
+
+                                    <div class="inline-car-box-text">
+                                        <p class="car-info-header">Make: </p>
+                                        <p class="car-info-in">{{ car[2] }}</p>
+                                    </div>
+
+                                    <div class="inline-car-box-text">
+                                        <p class="car-info-header">Model: </p>
+                                        <p class="car-info-in">{{ car[3] }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="car-box-right">
+                                    <img class="car-image" src="static/userImages/car/{{ car[4] }}" alt="Car image">
+                                    <input class="delete-car" type="image" src="static/img/delete.png" alt="submit" value="" id="delete-{{ car[0] }}">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <a href="404" id="add-car-link"> <!-- TODO: redirect user to add car for user (I cba to have something pop up with css) -->
+                        <div id="add-car-border">
+                            <div id="add-car">
+                                <img id="add-car-image" src="static/img/plus.png" alt="Plus image">
+                                <p id="add-car-text">ADD CAR</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div id="right-column"> <!-- The right hand column of the user profile page containing profile pic and edit buttons -->
+
+                </div>
+           </div>
         </section>
 
         <footer id="main-footer">
