@@ -108,12 +108,18 @@
     height: 92px;
 }
 
-#add-car-link{
-    text-decoration: none;
+#add-car-submit{
+    all: unset;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
 }
 
 #add-car-border{
     padding: 10px;
+
+    width: 100%;
 
     display: flex;
     justify-content: center;

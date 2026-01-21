@@ -239,6 +239,7 @@ class connection:
                 booking_string = next_booking[1]
 
                 return {
+                    "userID": userID,
                     "First Name": user_info[0],
                     "Last Name": user_info[1],
                     "User Type": user_info[2],

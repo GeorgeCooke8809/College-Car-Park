@@ -91,14 +91,14 @@
                         {% endfor %}
                     </div>
 
-                    <a href="404" id="add-car-link"> <!-- TODO: redirect user to add car for user (I cba to have something pop up with css) -->
+                    <button type="submit" value="add-car-{{ user_data['userID'] }}" id="add-car-submit"> <!-- TODO: update CSS to show add car window -->
                         <div id="add-car-border">
                             <div id="add-car">
                                 <img id="add-car-image" src="static/img/plus.png" alt="Plus image">
                                 <p id="add-car-text">ADD CAR</p>
                             </div>
                         </div>
-                    </a>
+                    </button>
                 </div>
 
                 <div id="right-column"> <!-- The right hand column of the user profile page containing profile pic and edit buttons -->
