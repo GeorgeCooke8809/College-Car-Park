@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Collyer's Car Park - Admin Dashboard</title>
+
+        <link rel="stylesheet" type="text/css" href="static/css/style.css">
+        <link rel="stylesheet" type="text/css" href="static/css/dashboard.css">
+        <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
+    </head>
+
+    <body onresize="checkSize()">
+        <header> 
+            <div class="header-parent">
+                <div class="header-child-text">Collyer's Car Park</div>
+
+                <nav class="header-child-list">
+                    <ul class="navigation-list">
+                        <li class="navigation-item"><a href="#" class="nav-button-current">Dashboard</a></li>
+                        <li class="navigation-item"><a href="./admin-users" class="nav-button">Users</a></li>
+                        <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li>
+                        <!-- TODO: Stretch target - <li class="navigation-item"><a href="blog-overviews.html" class="nav-button">Search</a></li> -->
+
+                        <!-- SIDE BAR
+                        <li class="show-side-bar-button" onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+                        <li class="hide-side-bar-button" onclick=hideSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+                    -->
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- SIDE BAR - FUTURE IMPLEMENTATION?
+        
+        <nav class="side-bar-list">
+            <ul class="side-bar-navigation-list">
+                <li><a href="#" class="nav-button-current">Home</a></li>
+                <li><a href="about.html" class="nav-button">About</a></li>
+                <li><a href="portfolio.html" class="nav-button">Portfolio</a></li>
+                <li><a href="freelance.html" class="nav-button">Freelance</a></li>
+                <li><a href="blog-overviews.html" class="nav-button">Blog</a></li>
+                <li><a href="contact.html" class="nav-button">Contact</a></li>
+            </ul>
+        </nav>
+        
+        -->
+
+        <section class="container">
+            <div id="dashboard-mini-settings">
+                <div id="date-select-divider">
+                    <input type="image" src="static/img/date_back.png" alt="submit" id="date_back" class="switch-date-button"> <!-- TODO: Add functionality to change date buttons -->
+
+                    <p id="current_date">{{ current_date }}</p>
+
+                    <input type="image" src="static/img/date_forward.png" alt="submit" id="date_forward" class="switch-date-button"> <!-- TODO: Add functionality to change date buttons -->
+                </div>
+
+                <div id="spaces-avail-display">
+                    <form id="spaces-in-use-form">
+                        <input type="number" id="edit_spaces_avail_entry">
+                        <input type="submit" id="submit-spaces_avail_entry" class="submit-button"> <!-- TODO: Add functionality to update spaces-->
+                    </form>
+
+                    <p id="spaces-text">{{current_spaces}}/{{maximum_spaces}} Spaces In Use</p>
+
+                    <input type="image" src="/static/img/edit.webp" alt="submit" name="editSpacesAvail" class="edit-button"> <!-- TODO: Implement functionality to show / hide edit spaces button, will require editing CSS with flask -->
+                </div>
+            </div>
+
+            <div id="dashboard-current-bookings">
+                {% for booking in bookings %}
+                    <div class="booking-box">
+                        <a href="404" class="booking-link">
+                            <h1>{{booking[1]}}</h1>
+                            <h3>{{booking[2]}}</h3>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <footer id="main-footer">
+            <hr>
+            <small>Copyright &copy; 2026 by George Cooke</small>
+        </footer>
+    </body>
+</html>

@@ -1,19 +1,49 @@
 import flask
 from flask import Flask, request
 from backend import connection
+import datetime
 
 # TODO: Disregard edit booking in design documents, direct users to delete and make new
 
 app = Flask(__name__)
+
+global data
 data = connection()
 
-@app.route("/", methods = ["GET", "POST"])
+@app.route("/", methods = ["GET"])
 def index():
-    return flask.render_template("index.html",
-                                 current_date = "TODAY",
+    date = flask.request.args.get("date", default="None", type=str)
+
+    if date == "None":
+        today = datetime.date.today()
+        date = today.strftime("%d/%m/%Y")
+    else:
+        date=f"{date[0:2]}/{date[2:4]}/{date[-4:]}"
+
+    print(f"{date = }")
+
+    return flask.render_template("admin-dashboard.html",
+                                 current_date = date,
                                  current_spaces = 1,
                                  maximum_spaces = 200,
-                                 bookings = [[1, "George Cooke", "STUDENT"]]
+                                 bookings = data.get_all_date_bookings(date)
+                                 )
+
+@app.route("/admin-dashboard", methods = ["GET", "POST"])
+def admin_dashboard():
+    #TODO: copy from index
+
+    pass
+
+@app.route("/admin-dashboard", methods = ["GET", "POST"])
+def view_user():
+    userID = flask.request.args.get("uid", default="None", type=str)
+
+    if userID == "None":
+        raise Exception("ERROR: No User ID provided")
+    else:
+        return flask.render_template("admin-view-user.html",
+                                 
                                  )
 
 if __name__ == "__main__":

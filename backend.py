@@ -28,7 +28,7 @@ class connection:
     def get_all_date_bookings(self, date:str): # Date format: DD/MM/YYYY
         """
         Gets all bookings for the specified date and returns them as a 2D array.
-        Array format: [[BookingID, User Name, User Status (e.g.: student)], ]
+        Array format: [[userID, User Name, User Status (e.g.: student)], ]
         """
 
         with self.connect() as connection:
@@ -45,7 +45,7 @@ class connection:
                 to_return_array = []
 
                 for index in to_return_IDs_array:
-                    temp = [index[0]]
+                    temp = [index[1]]
 
                     cursor.execute("SELECT fName, lName, userType FROM dbo.Users WHERE userID = ?", (index[1]))
                     user_data = cursor.fetchone()
@@ -688,4 +688,4 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
 
-    debugger.generate_ticket_PDF(1)
+    print(debugger.get_all_date_bookings("14/01/2026"))
