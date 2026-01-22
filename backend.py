@@ -149,6 +149,9 @@ class connection:
         "Phone": None
         }
         """
+        if information["Image Title"] == None:
+            information["Image Title"] = "none.webp"
+
         with self.connect() as connection:
             if connection is not None:
                 cursor = connection.cursor()
@@ -322,6 +325,9 @@ class connection:
             "Image Title": None
         }
         """
+
+        if carDetails["Image Title"] == None:
+            carDetails["Image Title"] == "none.jpg"
 
         with self.connect() as connection:
             if connection is not None:

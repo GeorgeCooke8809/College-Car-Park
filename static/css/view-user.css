@@ -130,12 +130,12 @@
     border-radius: 2rem;
 }
 
-#add-car{
-    display: flex;
+#add-car-border:hover{
+    background-color: #ececec;
 }
 
-#add-car-image{
-    height: 50px;
+#add-car{
+    display: flex;
 }
 
 #add-car-text{
@@ -148,7 +148,56 @@
 
 
 #right-column{
-    width: 30%;
-    margin-top: 20px;
-    background-color: aqua;
+    width: 25%;
+    margin-top: 15px;
+    padding: 20px;
+    padding-top: 0px;
+}
+
+#profile-picture{
+    width: 100%;
+    border-radius: 100%;
+}
+
+#mini-submit{
+    all: unset;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+}
+
+#mini-button-border{
+    padding: 10px;
+    margin-top: 7px;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    border-radius: 1rem;
+
+    background-color: #484848;
+}
+
+#mini-button-border:hover{
+    background-color: #575757;
+}
+
+#mini-button-group{
+    display: flex;
+}
+
+#mini-button-image{
+    height: 20px;
+}
+
+#mini-button-text{
+    color: #ffffff;
+    font-size: 20px;
+    margin: 0px;
+    padding: 0px;
+    font-weight: bold;
+    margin-left: 5px;
 }
