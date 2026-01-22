@@ -80,6 +80,10 @@
     margin: 5px 0px;
 }
 
+.booking-box:hover{
+    background-color: #a9b3de;
+}
+
 .booking-link{
     text-decoration: none;
 }
