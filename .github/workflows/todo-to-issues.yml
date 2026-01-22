@@ -1,41 +1,33 @@
-name: TODO to GitHub Issues
+name: Create issues from TODOs
 
 on:
+  workflow_dispatch:
+    inputs:
+      importAll:
+        default: false
+        required: false
+        type: boolean
+        description: Enable, if you want to import all TODOs. Runs on checked out branch! Only use if you're sure what you are doing.
   push:
-    branches:
-      - development
+    branches: # do not set multiple branches, todos might be added and then get referenced by themselves in case of a merge
+      - main
+      - master
+
+permissions:
+  issues: write
+  repository-projects: read
+  contents: read
 
 jobs:
-  todo_scan:
+  todos:
     runs-on: ubuntu-latest
 
-    permissions:
-      issues: write
-      contents: read
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
+
+      - name: Run Issue Bot
+        uses: juulsn/todo-issue@main
         with:
-          fetch-depth: 2  # needed to diff previous commit
-
-      - name: Get new TODOs
-        id: todos
-        run: |
-          git diff HEAD~1 HEAD \
-            | grep '^+' \
-            | grep 'TODO(issue):' \
-            | sed 's/^+//' \
-            > todos.txt || true
-
-      - name: Create GitHub issues
-        if: success()
+          excludePattern: '^(node_modules/)'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          while read -r line; do
-            TITLE=$(echo "$line" | sed 's/.*TODO(issue): *//')
-            gh issue create \
-              --title "$TITLE" \
-              --body "$line"
-          done < todos.txt
