@@ -6,7 +6,7 @@
         <title>Collyer's Car Park - Admin View User</title>
 
         <link rel="stylesheet" type="text/css" href="static/css/style.css">
-        <link rel="stylesheet" type="text/css" href="static/css/users.css">
+        <link rel="stylesheet" type="text/css" href="static/css/pending.css">
         <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
     </head>
 
@@ -18,8 +18,8 @@
                 <nav class="header-child-list">
                     <ul class="navigation-list">
                         <li class="navigation-item"><a href="./admin-dashboard" class="nav-button">Dashboard</a></li>
-                        <li class="navigation-item"><a href="#" class="nav-button-current">Users</a></li>
-                        <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li>
+                        <li class="navigation-item"><a href="./admin-users" class="nav-button">Users</a></li>
+                        <li class="navigation-item"><a href="#" class="nav-button-current">Pending Requests</a></li>
                         <!-- TODO: Stretch target - <li class="navigation-item"><a href="blog-overviews.html" class="nav-button">Search</a></li> -->
 
                         <!-- SIDE BAR
@@ -47,40 +47,26 @@
         -->
 
         <section class="container">
-            <button id="add-user-button"> <!-- TODO: Add functionality to add user button -->
-                <div id="add-user-border">
-                    <div id="add-user-centred">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#4a4a4a"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
-                        <p>ADD USER</p>
-                    </div>
-                </div>
-            </button>
-
-           <div id="user-list">
-                {% for user in users: %}
-                    <a class="user-link" href="/admin-view-user?uid={{ user[0] }}">
-                        <div class="user-border">
-                            <p class="user-name">
-                                {{ user[1] }} {{ user[2] }}
-                            </p>
-
-                            <div class="user-details-divider">
-                                <p class="user-type">{{ user[3] }}</p>
-
-                                <div class="user-booking-string-divider">
-                                    <p class="user-booking-string-header">Next Booking: </p>
-                                    
-                                    {% if user[-1][-1] == ")": %}
-                                        <p class="user-booking-string-active">{{ user[-1] }}</p>
-                                    {% else: %}
-                                        <p class="user-booking-string-inactive">{{ user[-1] }}</p>
-                                    {% endif %}
-                                </div>
-                            </div>
+            <div id="requests-list">
+                {% for request in requests: %}
+                    <div class="request-border">
+                        <div class="left-column">
+                            <h3 class="student-name-type">{{ request[1] }} - {{ request[2]}}</h3>
+                            <h4 class="date-string">{{ request[-1] }}</h4>
                         </div>
-                    </a>
+
+                        <div class="right-column">
+                            <button class="button"> <!-- TODO: add functionality to approve button -->
+                                <svg xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#000000"><path d="M382-208 122-468l90-90 170 170 366-366 90 90-456 456Z"/></svg>
+                            </button>
+
+                            <button class="button"> <!-- TODO: add functionality to deny button -->
+                                <svg xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                            
+                            </button>
+                        </div>
+                    </div>
                 {% endfor %}
-           </div>
+            </div>
         </section>
 
         <footer id="main-footer">

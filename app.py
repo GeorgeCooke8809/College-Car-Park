@@ -67,6 +67,12 @@ def view_user_bookings():
                                 name = name,
                                 bookings=data.get_all_user_bookings(userID)
                                 )
+    
+@app.route("/admin-pending", methods = ["GET", "POST"])
+def pending():
+    return flask.render_template("admin-pending.html",
+                            requests=data.get_all_pending_requests()
+                            )
 
 if __name__ == "__main__":
     app.run(debug=True)
