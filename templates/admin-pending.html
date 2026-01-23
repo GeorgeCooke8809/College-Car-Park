@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Collyer's Car Park - Admin View User</title>
+
+        <link rel="stylesheet" type="text/css" href="static/css/style.css">
+        <link rel="stylesheet" type="text/css" href="static/css/pending.css">
+        <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
+    </head>
+
+    <body onresize="checkSize()">
+        <header> 
+            <div class="header-parent">
+                <div class="header-child-text">Collyer's Car Park</div>
+
+                <nav class="header-child-list">
+                    <ul class="navigation-list">
+                        <li class="navigation-item"><a href="./admin-dashboard" class="nav-button">Dashboard</a></li>
+                        <li class="navigation-item"><a href="./admin-users" class="nav-button">Users</a></li>
+                        <li class="navigation-item"><a href="#" class="nav-button-current">Pending Requests</a></li>
+                        <!-- TODO: Stretch target - <li class="navigation-item"><a href="blog-overviews.html" class="nav-button">Search</a></li> -->
+
+                        <!-- SIDE BAR
+                        <li class="show-side-bar-button" onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+                        <li class="hide-side-bar-button" onclick=hideSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+                    -->
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- SIDE BAR - FUTURE IMPLEMENTATION?
+        
+        <nav class="side-bar-list">
+            <ul class="side-bar-navigation-list">
+                <li><a href="#" class="nav-button-current">Home</a></li>
+                <li><a href="about.html" class="nav-button">About</a></li>
+                <li><a href="portfolio.html" class="nav-button">Portfolio</a></li>
+                <li><a href="freelance.html" class="nav-button">Freelance</a></li>
+                <li><a href="blog-overviews.html" class="nav-button">Blog</a></li>
+                <li><a href="contact.html" class="nav-button">Contact</a></li>
+            </ul>
+        </nav>
+        
+        -->
+
+        <section class="container">
+            <div id="requests-list">
+                {% for request in requests: %}
+                    <div class="request-border">
+                        <div class="left-column">
+                            <h3 class="student-name-type">{{ request[1] }} - {{ request[2]}}</h3>
+                            <h4 class="date-string">{{ request[-1] }}</h4>
+                        </div>
+
+                        <div class="right-column">
+                            <button class="button"> <!-- TODO: add functionality to approve button -->
+                                <svg xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#000000"><path d="M382-208 122-468l90-90 170 170 366-366 90 90-456 456Z"/></svg>
+                            </button>
+
+                            <button class="button"> <!-- TODO: add functionality to deny button -->
+                                <svg xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                            
+                            </button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <footer id="main-footer">
+            <hr>
+            <small>Copyright &copy; 2026 by George Cooke</small>
+        </footer>
+    </body>
+</html>

@@ -28,7 +28,7 @@ class connection:
     def get_all_date_bookings(self, date:str): # Date format: DD/MM/YYYY
         """
         Gets all bookings for the specified date and returns them as a 2D array.
-        Array format: [[BookingID, User Name, User Status (e.g.: student)], ]
+        Array format: [[userID, User Name, User Status (e.g.: student)], ]
         """
 
         with self.connect() as connection:
@@ -45,7 +45,7 @@ class connection:
                 to_return_array = []
 
                 for index in to_return_IDs_array:
-                    temp = [index[0]]
+                    temp = [index[1]]
 
                     cursor.execute("SELECT fName, lName, userType FROM dbo.Users WHERE userID = ?", (index[1]))
                     user_data = cursor.fetchone()
@@ -75,6 +75,8 @@ class connection:
             if endDate != None:
                 if endDate >= today:
                     state = " (Current)"
+            else:
+                state = " (Current)"
 
 
         start_date_readable = startDate.strftime("%d/%m/%Y")
@@ -147,6 +149,9 @@ class connection:
         "Phone": None
         }
         """
+        if information["Image Title"] == None:
+            information["Image Title"] = "none.webp"
+
         with self.connect() as connection:
             if connection is not None:
                 cursor = connection.cursor()
@@ -215,12 +220,15 @@ class connection:
     def get_next_user_booking(self, userID:str):
         all_bookings = self.get_all_user_bookings(userID)
         
-        return all_bookings[0]
+        try:
+            return all_bookings[0]
+        except:
+            return [0, "No Pending Bookings"]
     
     def get_user_profile_data(self, userID:int):
         """
         Gets all the data needed to display a user's profile and outputs it as a dictionary.
-        Dictionary contents: name, status (e.g.: student), image path, email, phone
+        Dictionary contents: name, status (e.g.: student), image path, email, phone, booking string
         """
 
         with self.connect() as connection:
@@ -230,13 +238,18 @@ class connection:
                 cursor.execute("SELECT fName, lName, userType, profilePictureTitle, email, phone FROM dbo.Users WHERE userID = ?", (userID))
                 user_info = cursor.fetchone()
 
+                next_booking = self.get_next_user_booking(userID)
+                booking_string = next_booking[1]
+
                 return {
+                    "userID": userID,
                     "First Name": user_info[0],
                     "Last Name": user_info[1],
                     "User Type": user_info[2],
                     "Profile Picture": user_info[3],
                     "Email": user_info[4],
                     "Phone": user_info[5],
+                    "Booking String": booking_string
                 }
             else:
                 raise Exception("ERROR: Could not connect to database")
@@ -313,6 +326,9 @@ class connection:
         }
         """
 
+        if carDetails["Image Title"] == None:
+            carDetails["Image Title"] == "none.jpg"
+
         with self.connect() as connection:
             if connection is not None:
                 cursor = connection.cursor()
@@ -385,7 +401,8 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
     def generate_ticket_PDF(self, bookingID:str):
-        # TODO: Implement generate_ticket_PDF
+        # TODO: Make pretty,
+        # TODO: split into two functions,
         """
         Generates a PDF that can be printed with all the relevant data about the booking provided
         """
@@ -687,4 +704,4 @@ if __name__ == "__main__":
     # Enter debugging
     debugger = connection(debugging=True)
 
-    debugger.generate_ticket_PDF(1)
+    print(debugger.get_all_date_bookings("14/01/2026"))

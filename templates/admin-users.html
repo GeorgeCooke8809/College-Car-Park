@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Collyer's Car Park - Admin View User</title>
+
+        <link rel="stylesheet" type="text/css" href="static/css/style.css">
+        <link rel="stylesheet" type="text/css" href="static/css/users.css">
+        <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
+    </head>
+
+    <body onresize="checkSize()">
+        <header> 
+            <div class="header-parent">
+                <div class="header-child-text">Collyer's Car Park</div>
+
+                <nav class="header-child-list">
+                    <ul class="navigation-list">
+                        <li class="navigation-item"><a href="./admin-dashboard" class="nav-button">Dashboard</a></li>
+                        <li class="navigation-item"><a href="#" class="nav-button-current">Users</a></li>
+                        <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li>
+                        <!-- TODO: Stretch target - <li class="navigation-item"><a href="blog-overviews.html" class="nav-button">Search</a></li> -->
+
+                        <!-- SIDE BAR
+                        <li class="show-side-bar-button" onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+                        <li class="hide-side-bar-button" onclick=hideSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+                    -->
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- SIDE BAR - FUTURE IMPLEMENTATION?
+        
+        <nav class="side-bar-list">
+            <ul class="side-bar-navigation-list">
+                <li><a href="#" class="nav-button-current">Home</a></li>
+                <li><a href="about.html" class="nav-button">About</a></li>
+                <li><a href="portfolio.html" class="nav-button">Portfolio</a></li>
+                <li><a href="freelance.html" class="nav-button">Freelance</a></li>
+                <li><a href="blog-overviews.html" class="nav-button">Blog</a></li>
+                <li><a href="contact.html" class="nav-button">Contact</a></li>
+            </ul>
+        </nav>
+        
+        -->
+
+        <section class="container">
+            <button id="add-user-button"> <!-- TODO: Add functionality to add user button -->
+                <div id="add-user-border">
+                    <div id="add-user-centred">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#4a4a4a"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
+                        <p>ADD USER</p>
+                    </div>
+                </div>
+            </button>
+
+           <div id="user-list">
+                {% for user in users: %}
+                    <a class="user-link" href="/admin-view-user?uid={{ user[0] }}">
+                        <div class="user-border">
+                            <p class="user-name">
+                                {{ user[1] }} {{ user[2] }}
+                            </p>
+
+                            <div class="user-details-divider">
+                                <p class="user-type">{{ user[3] }}</p>
+
+                                <div class="user-booking-string-divider">
+                                    <p class="user-booking-string-header">Next Booking: </p>
+                                    
+                                    {% if user[-1][-1] == ")": %}
+                                        <p class="user-booking-string-active">{{ user[-1] }}</p>
+                                    {% else: %}
+                                        <p class="user-booking-string-inactive">{{ user[-1] }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+           </div>
+        </section>
+
+        <footer id="main-footer">
+            <hr>
+            <small>Copyright &copy; 2026 by George Cooke</small>
+        </footer>
+    </body>
+</html>

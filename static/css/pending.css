@@ -1,0 +1,40 @@
+.request-border{
+    display: flex;
+    justify-content: space-between;
+
+    width: 100%;
+
+    background-color: #b0bbe9;
+
+    border-radius: 2rem;
+
+    padding: 10px 20px;
+    margin: 10px 0px;
+    box-sizing: border-box;
+}
+
+.student-name-type{
+    padding: 0px;
+    margin: 0px;
+
+    font-size: 35px;
+}
+
+.date-string{
+    padding: 0px;
+    margin: 0px;
+
+    font-size: 30px;
+
+    font-weight: normal;
+}
+
+.right-column{
+    display: flex;
+}
+
+.button{
+    all: unset;
+
+    cursor: pointer;
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Collyer's Car Park - Admin View User</title>
+
+        <link rel="stylesheet" type="text/css" href="static/css/style.css">
+        <link rel="stylesheet" type="text/css" href="static/css/view-user.css">
+        <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
+    </head>
+
+    <body onresize="checkSize()">
+        <header> 
+            <div class="header-parent">
+                <div class="header-child-text">Collyer's Car Park</div>
+
+                <nav class="header-child-list">
+                    <ul class="navigation-list">
+                        <li class="navigation-item"><a href="./admin-dashboard" class="nav-button">Dashboard</a></li>
+                        <li class="navigation-item"><a href="./admin-users" class="nav-button-current">Users</a></li>
+                        <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li>
+                        <!-- TODO: Stretch target - <li class="navigation-item"><a href="blog-overviews.html" class="nav-button">Search</a></li> -->
+
+                        <!-- SIDE BAR
+                        <li class="show-side-bar-button" onclick=showSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+                        <li class="hide-side-bar-button" onclick=hideSidebar()><a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#e3e3e3"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg></a></li>
+                    -->
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- SIDE BAR - FUTURE IMPLEMENTATION?
+        
+        <nav class="side-bar-list">
+            <ul class="side-bar-navigation-list">
+                <li><a href="#" class="nav-button-current">Home</a></li>
+                <li><a href="about.html" class="nav-button">About</a></li>
+                <li><a href="portfolio.html" class="nav-button">Portfolio</a></li>
+                <li><a href="freelance.html" class="nav-button">Freelance</a></li>
+                <li><a href="blog-overviews.html" class="nav-button">Blog</a></li>
+                <li><a href="contact.html" class="nav-button">Contact</a></li>
+            </ul>
+        </nav>
+        
+        -->
+
+        <section class="container">
+           <div id="columns">
+                <div id="left-column"> <!-- The left hand column of the user profile page -->
+                    <h1 id="user-name">{{user_data["First Name"]}} {{user_data["Last Name"]}}</h1>
+                    <h3 id="user-type">{{user_data["User Type"]}}</h3>
+
+                    <div id="next-booking">
+                        <p id="bold-next-booking-heading">Next Booking: </p>
+
+                        {% if user_data["Booking String"][-1] == ")": %}
+                            <p class="active-booking-string">{{ user_data["Booking String"] }}</p>
+                        {% else: %}
+                            <p class="inactive-booking-string">{{ user_data["Booking String"] }}</p>
+                        {% endif %}
+                    </div>
+
+                    <a href="/admin-view-user-bookings?uid={{ userId }}" id="see-all-bookings">See All Bookings</a> <!-- TODO: Add functionality to see all bookings link in user profile -->
+
+                    <h3 id="cars-header">Cars:</h3>
+
+                    <div id="cars-collection">
+                        {% for car in user_cars: %}
+                            <div class="car-box">
+                                <div class="car-box-left">
+                                    <p class="registration">{{ car[1] }}</p>
+
+                                    <div class="inline-car-box-text">
+                                        <p class="car-info-header">Make: </p>
+                                        <p class="car-info-in">{{ car[2] }}</p>
+                                    </div>
+
+                                    <div class="inline-car-box-text">
+                                        <p class="car-info-header">Model: </p>
+                                        <p class="car-info-in">{{ car[3] }}</p>
+                                    </div>
+                                </div>
+
+                                <div class="car-box-right">
+                                    <img class="car-image" src="static/userImages/car/{{ car[4] }}" alt="Car image">
+                                    <input class="delete-car" type="image" src="static/img/delete.png" alt="submit" value="" id="delete-{{ car[0] }}">
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <button type="submit" value="add-car-{{ user_data['userID'] }}" id="add-car-submit"> <!-- TODO: update CSS to show add car window -->
+                        <div id="add-car-border">
+                            <div id="add-car">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#97999e"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
+                                <p id="add-car-text">ADD CAR</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <div id="right-column"> <!-- The right hand column of the user profile page containing profile pic and edit buttons -->
+                    <img id="profile-picture" src="static/userImages/profile/{{ user_data['Profile Picture'] }}" alt="Profile Picture">
+
+                    <button type="submit" value="view-contact-info" id="mini-submit"> <!-- TODO: update CSS to show contact info -->
+                        <div id="mini-button-border">
+                            <div id="mini-button-group">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ffffff"><path d="M172-126q-53 0-89.5-36.5T46-252v-456q0-53 36.5-89.5T172-834h616q53 0 89.5 36.5T914-708v456q0 53-36.5 89.5T788-126H172Zm308-271L172-597v345h616v-345L480-397Zm0-111 308-200H172l308 200Zm-308-89v-111 456-345Z"/></svg>
+                                <p id="mini-button-text">CONTACT INFO</p>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button type="submit" value="edit-user" id="mini-submit"> <!-- TODO: update CSS to show edit user -->
+                        <div id="mini-button-border">
+                            <div id="mini-button-group">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ffffff"><path d="M212-86q-53 0-89.5-36.5T86-212v-536q0-53 36.5-89.5T212-874h356L442-748H212v536h536v-229l126-126v355q0 53-36.5 89.5T748-86H212Zm268-394ZM344-344v-193l352-351q19-19 42-28t47-9q24 0 47 9t42 28l14 14q19 19 28 42.1t9 47q0 23.9-8.85 47.24Q907.3-714.32 888-695L537-344H344Zm484-441-43-42 43 42ZM450-450h42l223-223-20.63-21L673-715 450-493v43Zm244.37-244L673-715l21.37 21L715-673l-20.63-21Z"/></svg>
+                                <p id="mini-button-text">EDIT USER</p>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button type="submit" value="add-booking" id="mini-submit"> <!-- TODO: update CSS to show add booking -->
+                        <div id="mini-button-border">
+                            <div id="mini-button-group">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ffffff"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
+                                <p id="mini-button-text">ADD BOOKING</p>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+           </div>
+        </section>
+
+        <footer id="main-footer">
+            <hr>
+            <small>Copyright &copy; 2026 by George Cooke</small>
+        </footer>
+    </body>
+</html>

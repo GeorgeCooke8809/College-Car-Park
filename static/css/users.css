@@ -1,0 +1,110 @@
+#add-user-button{
+    all: unset;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    cursor: pointer;
+}
+
+#add-user-border{
+    border-radius: 2rem;
+    border-color: #4a4a4a;
+    border-style: solid;
+    border-width: 5px;
+
+    width: 100%;
+
+    padding: 5px;
+}
+
+#add-user-border:hover{
+    background-color: #e9e9e9;
+}
+
+#add-user-centred{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#add-user-centred p{
+    font-size: 40px;
+    font-weight: bold;
+
+    color: #4a4a4a;
+
+    padding: 0px;
+    margin: 0px;
+}
+
+#user-list{
+    margin: 20px 0px;
+}
+
+.user-link{
+    text-decoration: none;
+    color: black;
+}
+
+.user-border{
+    box-sizing: border-box;
+
+    background-color: #b0bbe9;
+
+    border-radius: 2rem;
+
+    width: 100%;
+
+    padding: 10px 20px;
+    margin: 10px 0px;
+}
+
+.user-name{
+    padding: 0px;
+    margin: 0px;
+
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.user-details-divider{
+    display: flex;
+}
+
+.user-type{
+    font-size: 25px;
+    margin: 0px;
+    padding: 0px;
+
+    width: 100px;
+}
+
+.user-booking-string-divider{
+    display: flex;
+}
+
+.user-booking-string-header{
+    font-size: 25px;
+    margin: 0px;
+    padding: 0px;
+
+    font-weight: bold;
+}
+
+.user-booking-string-active{
+    font-size: 25px;
+
+    color: green;
+
+    padding: 0px;
+    padding-left: 5px;
+    margin: 0px;
+}
+
+.user-booking-string-inactive{
+    font-size: 25px;
+
+    padding: 0px;
+    padding-left: 5px;
+    margin: 0px;
+}
