@@ -33,6 +33,12 @@ def admin_dashboard():
                                  bookings = data.get_all_date_bookings(date)
                                  )
 
+@app.route("/admin-users", methods = ["GET", "POST"])
+def users():
+    return flask.render_template("admin-users.html",
+                                    users=data.get_all_users()
+                                    )
+
 @app.route("/admin-view-user", methods = ["GET", "POST"])
 def view_user():
     userID = flask.request.args.get("uid", default="None", type=str)
