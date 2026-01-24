@@ -108,3 +108,180 @@
     padding-left: 5px;
     margin: 0px;
 }
+
+#add-user-window{
+    display: none;
+    flex-direction: column;
+
+    width: 1000px;
+    height: 500px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+#add-user-top-menu{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    padding-bottom: 20px;
+}
+
+#add-user-title{
+    padding: 0px;
+    margin: 0px;
+
+    font-size: 50px;
+}
+
+.close-button{
+    all: unset;
+    cursor: pointer;
+
+    width: 50px;
+    height: 50px; 
+
+    margin-left: auto;
+    margin-right: 0px;
+}
+
+#add-user-form{
+    display: flex;
+    justify-content: space-between;
+}
+
+#add-user-left-column{
+    width: 630px;
+}
+
+#names-inputs{
+    display: flex;
+}
+
+#names-separator{
+    width: 40px;
+}
+
+.add-user-subtitle{
+    font-size: 30px;
+    font-weight: normal;
+
+    padding: 0px;
+    padding-bottom: 3px;
+    margin: 0px;
+
+    margin-top: 20px;
+}
+
+.add-user-text-input{
+    width: 100%;
+
+    margin: 0px;
+    padding: 5px 7px;
+
+    font-size: 25px;
+
+    border-radius: 2rem;
+    border-width: 2px;
+    border-color: black;
+}
+
+#types-radio{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.user-type-radio-item{
+    display: flex;
+}
+
+.user-type-radio-item p{
+    margin: 0px;
+    padding: 0px;
+    padding-left: 3px;
+
+    font-size: 30px;
+
+    margin: auto;
+}
+
+.user-type-radio-item input[type=radio]{
+    width: 40px;
+    height: 40px;
+}
+
+#add-user-right-column{
+    display: flex;
+    flex-direction: column;
+
+    width: 330px;
+    align-items: center;
+}
+
+#add-user-right-column input[type=file]{
+    display: none;
+}
+
+#custom-image-upload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 330px;
+    height: 330px;
+
+    border-style: dotted;
+    border-radius: 2rem;
+    border-width: 5px;
+    border-color: black;
+
+    margin-bottom: 20px;
+
+    cursor: pointer;
+}
+
+#custom-image-upload:hover{
+    background-color: #e1e1e1FF;
+}
+
+#image-upload-content{
+    display: flex;
+    align-items: center;
+}
+
+#image-upload-content p{
+    font-size: 30px;
+}
+
+#add-user-submit-button{
+    width: 100%;
+
+    border-radius: 2rem;
+    border-style: none;
+
+    background-color: #182041;
+    color: white;
+
+    font-size: 30px;
+    font-weight: bold;
+
+    padding: 5px;
+
+    cursor: pointer;
+}

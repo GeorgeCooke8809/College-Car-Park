@@ -8,6 +8,8 @@
         <link rel="stylesheet" type="text/css" href="static/css/style.css">
         <link rel="stylesheet" type="text/css" href="static/css/users.css">
         <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
+
+        <script defer src="static/js/users.js"></script>
     </head>
 
     <body onresize="checkSize()">
@@ -47,7 +49,7 @@
         -->
 
         <section class="container">
-            <button id="add-user-button"> <!-- TODO: Add functionality to add user button -->
+            <button id="add-user-button" onclick=showAddUsers()> <!-- TODO: Add functionality to add user button -->
                 <div id="add-user-border">
                     <div id="add-user-centred">
                         <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#4a4a4a"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
@@ -81,6 +83,69 @@
                     </a>
                 {% endfor %}
            </div>
+        </section>
+
+        <section id="add-user-window">
+            <div id="add-user-top-menu">
+                <h3 id="add-user-title">Add User</h3>
+
+                <button class="close-button" onclick=hideAddUsers()>
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <form id="add-user-form" method="post">
+                <div id="add-user-left-column">
+                    <div id="names-inputs">
+                        <div>
+                            <h4 class="add-user-subtitle">First Name:</h4>
+                            <input class="add-user-text-input" name="inputFirstName" type="text">
+                        </div>
+                        <div id="names-separator"></div>
+                        <div>
+                            <h4 class="add-user-subtitle">Last Name:</h4>
+                            <input class="add-user-text-input" name="inputLastName" type="text">
+                        </div>
+                    </div>
+
+                    <h4 class="add-user-subtitle">Email:</h4>
+                    <input class="add-user-text-input" name="inputEmail" type="text">
+
+                    <h4 class="add-user-subtitle">Phone:</h4>
+                    <input class="add-user-text-input" name="inputPhone" type="text">
+
+                    <h4 class="add-user-subtitle">Type:</h4>
+                    <div id="types-radio">
+                        <div class="user-type-radio-item">
+                            <input name="userType" type="radio" value="Visitor">
+                            <p class="user-type-heading">Visitor</p>
+                        </div>
+
+                        <div class="user-type-radio-item">
+                            <input name="userType" type="radio" value="Student">
+                            <p class="user-type-heading">Student</p>
+                        </div>
+
+                        <div class="user-type-radio-item">
+                            <input name="userType" type="radio" value="Staff">
+                            <p class="user-type-heading">Staff</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="add-user-right-column">
+                    <label for="imageUpload" id="custom-image-upload">
+                        <div id="image-upload-content">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
+                            <p>Image</p>
+                        </div>
+                    </label>
+                    <input id="imageUpload" type="file" name="profilePicture" accept="image/*">
+
+                    <input id="add-user-submit-button" type="submit" value="ADD USER">
+                </div>
+            </form>
         </section>
 
         <footer id="main-footer">

@@ -1,9 +1,11 @@
 import flask
-from flask import Flask, request, redirect, url_for
+from flask import Flask, request, redirect, url_for, send_from_directory
 from backend import connection
 import datetime
 
 app = Flask(__name__)
+image_upload_folder = "static/userImages"
+app.config["UPLOAD_FOLDER"] = image_upload_folder
 
 global data
 data = connection()
