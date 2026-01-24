@@ -8,6 +8,8 @@
         <link rel="stylesheet" type="text/css" href="static/css/style.css">
         <link rel="stylesheet" type="text/css" href="static/css/view-user.css">
         <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
+
+        <script defer src="static/js/viewUser.js"></script>
     </head>
 
     <body onresize="checkSize()">
@@ -91,7 +93,7 @@
                         {% endfor %}
                     </div>
 
-                    <button type="submit" value="add-car-{{ user_data['userID'] }}" id="add-car-submit"> <!-- TODO: update CSS to show add car window -->
+                    <button id="add-car-submit"> <!-- TODO: update CSS to show add car window -->
                         <div id="add-car-border">
                             <div id="add-car">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#97999e"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
@@ -104,7 +106,7 @@
                 <div id="right-column"> <!-- The right hand column of the user profile page containing profile pic and edit buttons -->
                     <img id="profile-picture" src="static/userImages/profile/{{ user_data['Profile Picture'] }}" alt="Profile Picture">
 
-                    <button type="submit" value="view-contact-info" id="mini-submit"> <!-- TODO: update CSS to show contact info -->
+                    <button value="view-contact-info" id="mini-submit"> <!-- TODO: update CSS to show contact info -->
                         <div id="mini-button-border">
                             <div id="mini-button-group">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ffffff"><path d="M172-126q-53 0-89.5-36.5T46-252v-456q0-53 36.5-89.5T172-834h616q53 0 89.5 36.5T914-708v456q0 53-36.5 89.5T788-126H172Zm308-271L172-597v345h616v-345L480-397Zm0-111 308-200H172l308 200Zm-308-89v-111 456-345Z"/></svg>
@@ -113,7 +115,7 @@
                         </div>
                     </button>
 
-                    <button type="submit" value="edit-user" id="mini-submit"> <!-- TODO: update CSS to show edit user -->
+                    <button  id="mini-submit" onclick=showEditUsers()> <!-- TODO: update CSS to show edit user -->
                         <div id="mini-button-border">
                             <div id="mini-button-group">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ffffff"><path d="M212-86q-53 0-89.5-36.5T86-212v-536q0-53 36.5-89.5T212-874h356L442-748H212v536h536v-229l126-126v355q0 53-36.5 89.5T748-86H212Zm268-394ZM344-344v-193l352-351q19-19 42-28t47-9q24 0 47 9t42 28l14 14q19 19 28 42.1t9 47q0 23.9-8.85 47.24Q907.3-714.32 888-695L537-344H344Zm484-441-43-42 43 42ZM450-450h42l223-223-20.63-21L673-715 450-493v43Zm244.37-244L673-715l21.37 21L715-673l-20.63-21Z"/></svg>
@@ -122,7 +124,7 @@
                         </div>
                     </button>
 
-                    <button type="submit" value="add-booking" id="mini-submit"> <!-- TODO: update CSS to show add booking -->
+                    <button value="add-booking" id="mini-submit"> <!-- TODO: update CSS to show add booking -->
                         <div id="mini-button-border">
                             <div id="mini-button-group">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ffffff"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
@@ -132,6 +134,85 @@
                     </button>
                 </div>
            </div>
+        </section>
+
+        <section id="edit-user-window">
+            <div id="edit-user-top-menu">
+                <h3 id="edit-user-title">Edit User - {{user_data["First Name"]}} {{user_data["Last Name"]}}</h3>
+
+                <button class="close-button" onclick=hideEditUsers()>
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <form id="edit-user-form" method="post">
+                <div id="edit-user-left-column">
+                    <div id="names-inputs">
+                        <div>
+                            <h4 class="edit-user-subtitle">First Name:</h4>
+                            <input class="edit-user-text-input" name="inputFirstName" type="text" value="{{user_data['First Name']}}">
+                        </div>
+                        <div id="names-separator"></div>
+                        <div>
+                            <h4 class="edit-user-subtitle">Last Name:</h4>
+                            <input class="edit-user-text-input" name="inputLastName" type="text" value="{{user_data['Last Name']}}">
+                        </div>
+                    </div>
+
+                    <h4 class="edit-user-subtitle">Email:</h4>
+                    <input class="edit-user-text-input" name="inputEmail" type="text" value="{{user_data['Email']}}">
+
+                    <h4 class="edit-user-subtitle">Phone:</h4>
+                    <input class="edit-user-text-input" name="inputPhone" type="text" value="{{user_data['Phone']}}">
+
+                    <h4 class="edit-user-subtitle">Type:</h4>
+                    <div id="types-radio">
+                        <div class="user-type-radio-item">
+                            {% if user_data['User Type'] == "Visitor": %}
+                                <input name="userType" type="radio" value="Visitor" checked>
+                            {% else: %}
+                                <input name="userType" type="radio" value="Visitor">
+                            {% endif %}
+                            <p class="user-type-heading">Visitor</p>
+                        </div>
+
+                        <div class="user-type-radio-item">
+                            {% if user_data['User Type'] == "Student": %}
+                                <input name="userType" type="radio" value="Student" checked>
+                            {% else: %}
+                                <input name="userType" type="radio" value="Student">
+                            {% endif %}
+                            <p class="user-type-heading">Student</p>
+                        </div>
+
+                        <div class="user-type-radio-item">
+                            {% if user_data['User Type'] == "Staff": %}
+                                <input name="userType" type="radio" value="Staff" checked>
+                            {% else: %}
+                                <input name="userType" type="radio" value="Staff">
+                            {% endif %}
+                            <p class="user-type-heading">Staff</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="edit-user-right-column">
+                    <label for="imageUpload" id="custom-image-upload">
+                        <div id="edit-user-image">
+                            <img src="static/userImages/profile/{{ user_data['Profile Picture'] }}" alt="Profile Picture">
+                        </div>
+                        <div id="image-upload-content">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="40px" fill="#000000"><path d="M212-86q-53 0-89.5-36.5T86-212v-536q0-53 36.5-89.5T212-874h356L442-748H212v536h536v-229l126-126v355q0 53-36.5 89.5T748-86H212Zm268-394ZM344-344v-193l352-351q19-19 42-28t47-9q24 0 47 9t42 28l14 14q19 19 28 42.1t9 47q0 23.9-8.85 47.24Q907.3-714.32 888-695L537-344H344Zm484-441-43-42 43 42ZM450-450h42l223-223-20.63-21L673-715 450-493v43Zm244.37-244L673-715l21.37 21L715-673l-20.63-21Z"/></svg>
+                            <p>Image</p>
+                        </div>
+                    </label>
+                    <input id="imageUpload" type="file" name="profilePicture" accept="image/*">
+
+                    <input name="submitResetPassword" id="edit-user-submit-button" type="submit" value="RESET PASSWORD">
+                    <input name="submitEditUser" id="edit-user-submit-button" type="submit" value="SAVE">
+                </div>
+            </form>
         </section>
 
         <footer id="main-footer">

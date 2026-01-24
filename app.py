@@ -79,12 +79,12 @@ def view_user():
 
     if userID == "None":
         raise Exception("ERROR: No User ID provided")
-    else:
-        return flask.render_template("admin-view-user.html",
-                                     userId=userID,
-                                     user_data=data.get_user_profile_data(userID),
-                                     user_cars=data.get_all_user_cars(userID) 
-                                     )
+
+    return flask.render_template("admin-view-user.html",
+                                    userId=userID,
+                                    user_data=data.get_user_profile_data(userID),
+                                    user_cars=data.get_all_user_cars(userID) 
+                                    )
     
 @app.route("/admin-view-user-bookings", methods = ["GET", "POST"])
 def view_user_bookings():
