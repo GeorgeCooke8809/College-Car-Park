@@ -1,9 +1,7 @@
 import flask
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, url_for
 from backend import connection
 import datetime
-
-# TODO: Disregard edit booking in design documents, direct users to delete and make new
 
 app = Flask(__name__)
 
@@ -11,7 +9,7 @@ global data
 data = connection()
 
 @app.route("/", methods = ["GET"])
-def index():
+def index(): # TODO: implement select user type
     return redirect("./admin-dashboard", code=302)
 
 @app.route("/admin-dashboard", methods = ["GET", "POST"])
@@ -25,13 +23,13 @@ def admin_dashboard():
         else:
             date=f"{date[0:2]}/{date[2:4]}/{date[-4:]}"
 
-        print(f"{date = }")
+        bookings = data.get_all_date_bookings(date)
 
         return flask.render_template("admin-dashboard.html",
-                                    current_date = date,
-                                    current_spaces = 1,
-                                    maximum_spaces = 200,
-                                    bookings = data.get_all_date_bookings(date)
+                                    current_date=date,
+                                    current_spaces=len(bookings),
+                                    maximum_spaces=data.get_maximum_capacity(),
+                                    bookings=bookings,
                                     )
     
     elif flask.request.method == "POST": # Triggered when a button is pressed
@@ -46,7 +44,7 @@ def admin_dashboard():
             new_date = date - datetime.timedelta(days=1)
             new_date = new_date.strftime("%d%m%Y")
 
-            return redirect(f"./admin-dashboard?date={new_date}", code=302)
+            return redirect(f"./admin-dashboard?date={new_date}", code=304)
         elif "forwardDate.x" in flask.request.form:
             date = flask.request.args.get("date", default="None", type=str)
             
@@ -58,9 +56,12 @@ def admin_dashboard():
             new_date = date + datetime.timedelta(days=1)
             new_date = new_date.strftime("%d%m%Y")
 
-            return redirect(f"./admin-dashboard?date={new_date}", code=302)
+            return redirect(f"./admin-dashboard?date={new_date}", code=304)
         elif "submitNewSpaces" in flask.request.form:
-            print("Submit new spaces") # TODO: get new spaces
+            new_spaces = int(flask.request.form["newSpaces"])
+            data.update_maximum_capacity(new_spaces)
+
+            return redirect(url_for("admin_dashboard"))
 
         return "", 304
 
