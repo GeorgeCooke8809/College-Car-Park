@@ -16,22 +16,53 @@ def index():
 
 @app.route("/admin-dashboard", methods = ["GET", "POST"])
 def admin_dashboard():
-    date = flask.request.args.get("date", default="None", type=str)
+    if flask.request.method == "GET":
+        date = flask.request.args.get("date", default="None", type=str)
 
-    if date == "None":
-        today = datetime.date.today()
-        date = today.strftime("%d/%m/%Y")
-    else:
-        date=f"{date[0:2]}/{date[2:4]}/{date[-4:]}"
+        if date == "None":
+            today = datetime.date.today()
+            date = today.strftime("%d/%m/%Y")
+        else:
+            date=f"{date[0:2]}/{date[2:4]}/{date[-4:]}"
 
-    print(f"{date = }")
+        print(f"{date = }")
 
-    return flask.render_template("admin-dashboard.html",
-                                 current_date = date,
-                                 current_spaces = 1,
-                                 maximum_spaces = 200,
-                                 bookings = data.get_all_date_bookings(date)
-                                 )
+        return flask.render_template("admin-dashboard.html",
+                                    current_date = date,
+                                    current_spaces = 1,
+                                    maximum_spaces = 200,
+                                    bookings = data.get_all_date_bookings(date)
+                                    )
+    
+    elif flask.request.method == "POST": # Triggered when a button is pressed
+        if "backDate.x" in flask.request.form:
+            date = flask.request.args.get("date", default="None", type=str)
+            
+            if date != "None":
+                date = datetime.date.strptime(date, "%d%m%Y")
+            else:
+                date = datetime.date.today()
+
+            new_date = date - datetime.timedelta(days=1)
+            new_date = new_date.strftime("%d%m%Y")
+
+            return redirect(f"./admin-dashboard?date={new_date}", code=302)
+        elif "forwardDate.x" in flask.request.form:
+            date = flask.request.args.get("date", default="None", type=str)
+            
+            if date != "None":
+                date = datetime.date.strptime(date, "%d%m%Y")
+            else:
+                date = datetime.date.today()
+
+            new_date = date + datetime.timedelta(days=1)
+            new_date = new_date.strftime("%d%m%Y")
+
+            return redirect(f"./admin-dashboard?date={new_date}", code=302)
+        elif "submitNewSpaces" in flask.request.form:
+            print("Submit new spaces") # TODO: get new spaces
+
+        return "", 304
 
 @app.route("/admin-users", methods = ["GET", "POST"])
 def users():
