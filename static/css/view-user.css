@@ -202,6 +202,15 @@
     margin-left: 5px;
 }
 
+.non-functional-buttons{
+    display: none;
+}
+
+.functional-buttons{
+    display: block;
+}
+
+
 #edit-user-window{
     display: none;
     flex-direction: column;
@@ -236,7 +245,7 @@
     padding-bottom: 20px;
 }
 
-#edit-user-title{
+#pop-up-title{
     padding: 0px;
     margin: 0px;
 
@@ -391,4 +400,43 @@
     margin-bottom: 5px;
 
     cursor: pointer;
+}
+
+#contact-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 300px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+#contact-top-menu{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    padding-bottom: 20px;
+}
+
+#contact-container p{
+    font-size: 40px;
+    margin: 0px;
 }

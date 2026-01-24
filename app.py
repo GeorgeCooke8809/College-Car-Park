@@ -46,7 +46,7 @@ def admin_dashboard():
             new_date = date - datetime.timedelta(days=1)
             new_date = new_date.strftime("%d%m%Y")
 
-            return redirect(f"./admin-dashboard?date={new_date}", code=304)
+            return redirect(f"./admin-dashboard?date={new_date}", code=302)
         elif "forwardDate.x" in flask.request.form:
             date = flask.request.args.get("date", default="None", type=str)
             
@@ -58,7 +58,7 @@ def admin_dashboard():
             new_date = date + datetime.timedelta(days=1)
             new_date = new_date.strftime("%d%m%Y")
 
-            return redirect(f"./admin-dashboard?date={new_date}", code=304)
+            return redirect(f"./admin-dashboard?date={new_date}", code=302)
         elif "submitNewSpaces" in flask.request.form:
             new_spaces = int(flask.request.form["newSpaces"])
             data.update_maximum_capacity(new_spaces)
