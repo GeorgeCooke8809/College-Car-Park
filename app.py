@@ -67,7 +67,7 @@ def admin_dashboard(): # TODO: split into separate get and post functions
 
         return "", 304
 
-@app.route("/admin-users", methods = ["GET", "POST"])
+@app.route("/admin-users", methods = ["GET"])
 def users():
     return flask.render_template("admin-users.html",
                                     users=data.get_all_users()
@@ -109,6 +109,12 @@ def add_booking(bookingType, referer):
 
 @app.route("/admin-edit-user", methods=["POST"]) # Triggered by the edit user button in the admin view user page
 def admin_edit_user():
+    userID = flask.request.args.get("uid", default="None", type=str)
+
+    return "", 304
+
+@app.route("/admin-add-car", methods=["POST"]) # Triggered by the add car button in the admin user profile
+def admin_add_car():
     userID = flask.request.args.get("uid", default="None", type=str)
 
     return "", 304

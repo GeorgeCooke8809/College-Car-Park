@@ -608,3 +608,91 @@
     margin: auto;
     padding: 15px;
 }
+
+#add-car-window{
+    display: none;
+    flex-direction: column;
+
+    width: 1000px;
+    height: 450px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+#add-car-columns{
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-car-subtitle{
+    font-weight: lighter;
+    font-size: 35px;
+
+    padding: 0px;
+    margin: 0px;
+}
+
+.add-car-text-entry{
+    width: 100%;
+    margin-bottom: 20px;
+
+    border-radius: 2rem;
+    border-color: black;
+    border-style: solid;
+    border-width: 3px;
+
+    font-size: 30px;
+
+    padding: 2px 7px;
+}
+
+#custom-car-image-upload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    width: 280px;
+    height: 280px;
+
+    margin-bottom: 20px;
+    border-radius: 2rem;
+    border-style: dotted;
+    border-color: black;
+    border-width: 5px;
+
+    cursor: pointer;
+}
+
+#add-car-submit-button{
+    display: block;
+    width: 100%;
+    border-radius: 2rem;
+    background-color: #182041;
+    color: white;
+
+    font-size: 35px;
+    font-weight: bold;
+
+    padding: 5px;
+}
+
+#add-car-submit-button:hover{
+    background-color: #263056;
+}

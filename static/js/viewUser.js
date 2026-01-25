@@ -96,3 +96,17 @@ function showUnlimitedPassBooking(){
     const newWindow = document.querySelector('#add-unlimited-pass-window')
     newWindow.style.display = 'flex'
 }
+
+function showAddCar(){
+    const window = document.querySelector('#add-car-window')
+    window.style.display = 'flex'
+
+    hideFunctionalButtons()
+}
+
+function hideAddCar(){
+    const window = document.querySelector('#add-car-window')
+    window.style.display = 'none'
+
+    showFunctionalButtons()
+} 
