@@ -131,9 +131,10 @@ def view_user_bookings():
         name = f"{profile_data["First Name"]} {profile_data["Last Name"]}"
 
         return flask.render_template("admin-view-user-bookings.html",
-                                name = name,
-                                bookings=data.get_all_user_bookings(userID)
-                                )
+                                        userID=userID,
+                                        name = name,
+                                        bookings=data.get_all_user_bookings(userID)
+                                        )
     
 @app.route("/admin-pending", methods = ["GET", "POST"])
 def pending():
