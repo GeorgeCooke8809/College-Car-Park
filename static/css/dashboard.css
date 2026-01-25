@@ -35,9 +35,21 @@
     justify-content: center;
 }
 
+#spaces-in-use-form{
+    display: none;
+    flex-direction: row;
+}
+
 .edit-button{
-    width: 23px;
-    height: 23px;
+    display: flex;
+    all: unset;
+    cursor: pointer;
+}
+
+.close-button{
+    all: unset;
+    cursor: pointer;
+    display: none;
 }
 
 .submit-button{
@@ -49,7 +61,7 @@
     background-color: #182041;
     color: #FFFFFF;
 
-    border-width: 0px;
+    margin-left: 5px;
 
     border-radius: 0.3rem;
 }

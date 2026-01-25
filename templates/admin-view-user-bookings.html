@@ -8,6 +8,8 @@
         <link rel="stylesheet" type="text/css" href="static/css/style.css">
         <link rel="stylesheet" type="text/css" href="static/css/view-user-bookings.css">
         <link rel="shortcut icon" type="image/x-icon" href="static/img/favicon.ico">
+
+        <script defer src="static/js/userBookings.js"></script>
     </head>
 
     <body onresize="checkSize()">
@@ -65,7 +67,7 @@
                 </div>
            {% endfor %}
 
-           <button id="add-booking-button"> <!-- TODO: add functionality to add booking button -->
+           <button id="add-booking-button" onclick=showBooking()> <!-- TODO: add functionality to add booking button -->
                 <div id="add-booking-border">
                     <div id="add-booking-content">
                         <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#4a4a4a"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
@@ -73,6 +75,89 @@
                     </div>
                 </div>
            </button>
+        </section>
+
+        <section id="add-booking-type-window">
+            <div id="pop-up-top-menu">
+                <h3 id="pop-up-title">Booking Type - {{ name }}</h3>
+
+                <button class="close-button" onclick=hideBooking()>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <div id="add-booking-container">
+                <button class="add-booking-type-button" onclick=showDayPassBooking()>
+                    <p>Day Pass</p>
+                </button>
+
+                <button class="add-booking-type-button" onclick=showSeasonPassBooking()>
+                    <p>Season Pass</p>
+                </button>
+
+                <button class="add-booking-type-button" onclick=showUnlimitedPassBooking()>
+                    <p>Unlimited Pass</p>
+                </button>
+            </div>
+        </section>
+
+        <section id="add-day-pass-window">
+            <div id="pop-up-top-menu">
+                <h3 id="pop-up-title">Day Pass - {{ name }}</h3>
+
+                <button class="close-button" onclick=hideBooking()>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <div id="add-booking-container">
+                <form method="post", action="/admin-add-booking/day/bookings?uid={{ userID }}">
+                    <p class="add-booking-dates-subtitle">Date:</p>
+                    <input id="day-pass-start-date" type="date" name="startDate">
+                    <input class="add-booking-submit" type="submit" name="submitDayPass" value="ADD BOOKING">
+                </form>
+            </div>
+        </section>
+
+        <section id="add-season-pass-window">
+            <div id="pop-up-top-menu">
+                <h3 id="pop-up-title">Season Pass - {{ name }}</h3>
+
+                <button class="close-button" onclick=hideBooking()>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <div id="add-booking-container">
+                <form method="post", action="/admin-add-booking/season/bookings?uid={{ userID }}">
+                    <p class="add-booking-dates-subtitle">Start Date:</p>
+                    <input id="day-pass-start-date" type="date" name="startDate">
+
+                    <p class="add-booking-dates-subtitle"> End Date:</p>
+                    <input id="day-pass-start-date" type="date" name="endDate">
+
+                    <input class="add-booking-submit" type="submit" name="submitSeasonPass" value="ADD BOOKING">
+                </form>
+            </div>
+        </section>
+
+        <section id="add-unlimited-pass-window">
+            <div id="pop-up-top-menu">
+                <h3 id="pop-up-title">Unlimited Pass - {{ name }}</h3>
+
+                <button class="close-button" onclick=hideBooking()>
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <div id="add-booking-container">
+                <form method="post", action="/admin-add-booking/unlimited/bookings?uid={{ userID }}">
+                    <p class="add-booking-dates-subtitle">Start Date:</p>
+                    <input id="day-pass-start-date" type="date" name="startDate">
+                    <input class="add-booking-submit" type="submit" name="submitUnlimitedPass" value="ADD BOOKING">
+                </form>
+            </div>
         </section>
 
         <footer id="main-footer">

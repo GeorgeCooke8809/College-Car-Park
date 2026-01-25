@@ -201,3 +201,498 @@
     font-weight: bold;
     margin-left: 5px;
 }
+
+.non-functional-buttons{
+    display: none;
+}
+
+.functional-buttons{
+    display: block;
+}
+
+
+#edit-user-window{
+    display: none;
+    flex-direction: column;
+
+    width: 1000px;
+    height: 500px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+#pop-up-top-menu{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    padding-bottom: 20px;
+}
+
+#pop-up-title{
+    padding: 0px;
+    margin: 0px;
+
+    font-size: 50px;
+}
+
+.close-button{
+    all: unset;
+    cursor: pointer;
+
+    width: 50px;
+    height: 50px; 
+
+    margin-left: auto;
+    margin-right: 0px;
+}
+
+#edit-user-form{
+    display: flex;
+    justify-content: space-between;
+}
+
+#edit-user-left-column{
+    width: 630px;
+}
+
+#names-inputs{
+    display: flex;
+}
+
+#names-separator{
+    width: 40px;
+}
+
+.edit-user-subtitle{
+    font-size: 30px;
+    font-weight: normal;
+
+    padding: 0px;
+    padding-bottom: 3px;
+    margin: 0px;
+
+    margin-top: 20px;
+}
+
+.edit-user-text-input{
+    width: 100%;
+
+    margin: 0px;
+    padding: 5px 7px;
+
+    font-size: 25px;
+
+    border-radius: 2rem;
+    border-width: 2px;
+    border-color: black;
+}
+
+#types-radio{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.user-type-radio-item{
+    display: flex;
+}
+
+.user-type-radio-item p{
+    margin: 0px;
+    padding: 0px;
+    padding-left: 3px;
+
+    font-size: 30px;
+
+    margin: auto;
+}
+
+.user-type-radio-item input[type=radio]{
+    width: 40px;
+    height: 40px;
+}
+
+#edit-user-right-column{
+    display: flex;
+    flex-direction: column;
+
+    width: 330px;
+    align-items: center;
+}
+
+#edit-user-right-column input[type=file]{
+    display: none;
+}
+
+#custom-image-upload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    width: 280px;
+    height: 280px;
+
+    margin-bottom: 20px;
+    border-radius: 100%;
+
+    cursor: pointer;
+}
+
+#edit-user-image{
+    position: absolute;
+}
+
+#edit-user-image img{
+    width: 280px;
+    height: 280px;
+
+    border-style: solid;
+    border-radius: 100%;
+    border-width: 2px;
+    border-color: black;
+}
+
+#custom-image-upload:hover{
+    background-color: #e1e1e1FF;
+}
+
+#image-upload-content{
+    display: flex;
+    align-items: center;
+    position: absolute;
+}
+
+#image-upload-content p{
+    font-size: 30px;
+    margin-left: 5px;
+}
+
+#edit-user-submit-button{
+    width: 100%;
+
+    border-radius: 2rem;
+    border-style: none;
+
+    background-color: #182041;
+    color: white;
+
+    font-size: 30px;
+    font-weight: bold;
+
+    padding: 5px;
+    margin-bottom: 5px;
+
+    cursor: pointer;
+}
+
+#contact-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 300px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+#contact-container p{
+    font-size: 40px;
+    margin: 0px;
+}
+
+#add-booking-type-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 230px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+.add-booking-type-button{
+    display: block;
+    margin: 3px 0px;
+
+    width: 100%;
+
+    border-radius: 2rem;
+
+    border-style: none;
+
+    background-color: #182041;
+
+    cursor: pointer;
+}
+
+.add-booking-type-button:hover{
+    background-color: #263056;
+}
+
+.add-booking-type-button p{
+    margin: 0px;
+    padding: 5px 0px;
+
+    font-size: 30px;
+    color: white;
+}
+
+#add-day-pass-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 230px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+.add-booking-dates-subtitle{
+    font-size: 35px;
+    font-weight: lighter;
+
+    padding: 0px;
+    margin: 0px;
+}
+
+#day-pass-start-date{
+    display: block;
+    box-sizing: border-box;
+
+    width: 100%;
+
+    font-size: 30px;
+
+    border-radius: 2rem;
+    padding: 2px 5px;
+
+    margin-bottom: 20px;
+}
+
+.add-booking-submit{
+    display: block;
+
+    width: 100%;
+    background-color: #182041;
+
+    border-radius: 2rem;
+    color: white;
+    border-style: none;
+
+    padding: 2px;
+    margin: 0px;
+
+    font-size: 35px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.add-booking-submit:hover{
+    background-color: #263056;
+}
+
+#add-season-pass-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 325px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+#add-unlimited-pass-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 230px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+#add-car-window{
+    display: none;
+    flex-direction: column;
+
+    width: 1000px;
+    height: 450px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+#add-car-columns{
+    display: flex;
+    justify-content: space-between;
+}
+
+.add-car-subtitle{
+    font-weight: lighter;
+    font-size: 35px;
+
+    padding: 0px;
+    margin: 0px;
+}
+
+.add-car-text-entry{
+    width: 100%;
+    margin-bottom: 20px;
+
+    border-radius: 2rem;
+    border-color: black;
+    border-style: solid;
+    border-width: 3px;
+
+    font-size: 30px;
+
+    padding: 2px 7px;
+}
+
+#custom-car-image-upload{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    width: 280px;
+    height: 280px;
+
+    margin-bottom: 20px;
+    border-radius: 2rem;
+    border-style: dotted;
+    border-color: black;
+    border-width: 5px;
+
+    cursor: pointer;
+}
+
+#add-car-submit-button{
+    display: block;
+    width: 100%;
+    border-radius: 2rem;
+    background-color: #182041;
+    color: white;
+
+    font-size: 35px;
+    font-weight: bold;
+
+    padding: 5px;
+}
+
+#add-car-submit-button:hover{
+    background-color: #263056;
+}
