@@ -15,7 +15,7 @@ def index(): # TODO: implement select user type
     return redirect("./admin-dashboard", code=302)
 
 @app.route("/admin-dashboard", methods = ["GET", "POST"])
-def admin_dashboard():
+def admin_dashboard(): # TODO: split into separate get and post functions
     if flask.request.method == "GET":
         date = flask.request.args.get("date", default="None", type=str)
 
@@ -73,7 +73,7 @@ def users():
                                     users=data.get_all_users()
                                     )
 
-@app.route("/admin-view-user", methods = ["GET", "POST"])
+@app.route("/admin-view-user", methods = ["GET"])
 def view_user():
     userID = flask.request.args.get("uid", default="None", type=str)
 
@@ -81,12 +81,39 @@ def view_user():
         raise Exception("ERROR: No User ID provided")
 
     return flask.render_template("admin-view-user.html",
-                                    userId=userID,
+                                    userID=userID,
                                     user_data=data.get_user_profile_data(userID),
                                     user_cars=data.get_all_user_cars(userID) 
                                     )
+
+@app.route("/admin-add-booking/<bookingType>/<referer>", methods = ["POST"]) # Triggered by the add booking button in the admin view user page
+def add_booking(bookingType, referer):
+    userID = flask.request.args.get("uid", default="None", type=str)
+
+    if bookingType == "day":
+        pass
+    elif bookingType == "season":
+        pass
+    elif bookingType == "unlimited":
+        pass
+    else:
+        raise Exception("ERROR - Invalid type of add bookings")
+
+
+    if referer == "profile":
+        return redirect(f"/admin-view-user?uid={userID}")
+    elif referer == "bookings":
+        return redirect(f"/admin-view-user-bookings?uid={userID}")
+    else:
+        return redirect(f"/admin-dashboard")
+
+@app.route("/admin-edit-user", methods=["POST"]) # Triggered by the edit user button in the admin view user page
+def admin_edit_user():
+    userID = flask.request.args.get("uid", default="None", type=str)
+
+    return "", 304
     
-@app.route("/admin-view-user-bookings", methods = ["GET", "POST"])
+@app.route("/admin-view-user-bookings", methods = ["GET"])
 def view_user_bookings():
     userID = flask.request.args.get("uid", default="None", type=str)
 

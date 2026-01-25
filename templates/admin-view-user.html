@@ -120,7 +120,7 @@
                     <img id="profile-picture" src="static/userImages/profile/{{ user_data['Profile Picture'] }}" alt="Profile Picture">
 
                     <div class="functional-buttons">
-                        <button id="mini-submit" onclick=showContact()> <!-- TODO: update CSS to show contact info -->
+                        <button id="mini-submit" onclick=showContact()>
                             <div id="mini-button-border">
                                 <div id="mini-button-group">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ffffff"><path d="M172-126q-53 0-89.5-36.5T46-252v-456q0-53 36.5-89.5T172-834h616q53 0 89.5 36.5T914-708v456q0 53-36.5 89.5T788-126H172Zm308-271L172-597v345h616v-345L480-397Zm0-111 308-200H172l308 200Zm-308-89v-111 456-345Z"/></svg>
@@ -129,7 +129,7 @@
                             </div>
                         </button>
 
-                        <button  id="mini-submit" onclick=showEditUsers()> <!-- TODO: update CSS to show edit user -->
+                        <button  id="mini-submit" onclick=showEditUsers()>
                             <div id="mini-button-border">
                                 <div id="mini-button-group">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ffffff"><path d="M212-86q-53 0-89.5-36.5T86-212v-536q0-53 36.5-89.5T212-874h356L442-748H212v536h536v-229l126-126v355q0 53-36.5 89.5T748-86H212Zm268-394ZM344-344v-193l352-351q19-19 42-28t47-9q24 0 47 9t42 28l14 14q19 19 28 42.1t9 47q0 23.9-8.85 47.24Q907.3-714.32 888-695L537-344H344Zm484-441-43-42 43 42ZM450-450h42l223-223-20.63-21L673-715 450-493v43Zm244.37-244L673-715l21.37 21L715-673l-20.63-21Z"/></svg>
@@ -138,7 +138,7 @@
                             </div>
                         </button>
 
-                        <button value="add-booking" id="mini-submit"> <!-- TODO: update CSS to show add booking -->
+                        <button id="mini-submit" onclick=showBooking()> <!-- TODO: update CSS to show add booking -->
                             <div id="mini-button-border">
                                 <div id="mini-button-group">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#ffffff"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
@@ -181,7 +181,7 @@
         </section>
 
         <section id="edit-user-window">
-            <div id="edit-user-top-menu">
+            <div id="pop-up-top-menu">
                 <h3 id="pop-up-title">Edit User - {{user_data["First Name"]}} {{user_data["Last Name"]}}</h3>
 
                 <button class="close-button" onclick=hideEditUsers()>
@@ -190,7 +190,7 @@
                 </button>
             </div>
 
-            <form id="edit-user-form" method="post">
+            <form id="edit-user-form" method="post", action="/admin-edit-user?uid={{ userID }}">
                 <div id="edit-user-left-column">
                     <div id="names-inputs">
                         <div>
@@ -260,7 +260,7 @@
         </section>
 
         <section id="contact-window">
-            <div id="contact-top-menu">
+            <div id="pop-up-top-menu">
                 <h3 id="pop-up-title">Contact - {{user_data["First Name"]}} {{user_data["Last Name"]}}</h3>
 
                 <button class="close-button" onclick=hideContact()>
@@ -277,6 +277,92 @@
 
                 <p>Phone:</p>
                 <p>{{user_data["Phone"]}}</p>
+            </div>
+        </section>
+
+        <section id="add-booking-type-window">
+            <div id="pop-up-top-menu">
+                <h3 id="pop-up-title">Booking Type - {{user_data["First Name"]}} {{user_data["Last Name"]}}</h3>
+
+                <button class="close-button" onclick=hideBooking()>
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <div id="add-booking-container">
+                <button class="add-booking-type-button" onclick=showDayPassBooking()>
+                    <p>Day Pass</p>
+                </button>
+
+                <button class="add-booking-type-button" onclick=showSeasonPassBooking()>
+                    <p>Season Pass</p>
+                </button>
+
+                <button class="add-booking-type-button" onclick=showUnlimitedPassBooking()>
+                    <p>Unlimited Pass</p>
+                </button>
+            </div>
+        </section>
+
+        <section id="add-day-pass-window">
+            <div id="pop-up-top-menu">
+                <h3 id="pop-up-title">Day Pass - {{user_data["First Name"]}} {{user_data["Last Name"]}}</h3>
+
+                <button class="close-button" onclick=hideBooking()>
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <div id="add-booking-container">
+                <form method="post", action="/admin-add-booking/day/profile?uid={{ userID }}">
+                    <p class="add-booking-dates-subtitle">Date:</p>
+                    <input id="day-pass-start-date" type="date" name="startDate">
+                    <input class="add-booking-submit" type="submit" name="submitDayPass" value="ADD BOOKING">
+                </form>
+            </div>
+        </section>
+
+        <section id="add-season-pass-window">
+            <div id="pop-up-top-menu">
+                <h3 id="pop-up-title">Season Pass - {{user_data["First Name"]}} {{user_data["Last Name"]}}</h3>
+
+                <button class="close-button" onclick=hideBooking()>
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <div id="add-booking-container">
+                <form method="post", action="/admin-add-booking/season/profile?uid={{ userID }}">
+                    <p class="add-booking-dates-subtitle">Start Date:</p>
+                    <input id="day-pass-start-date" type="date" name="startDate">
+
+                    <p class="add-booking-dates-subtitle"> End Date:</p>
+                    <input id="day-pass-start-date" type="date" name="endDate">
+
+                    <input class="add-booking-submit" type="submit" name="submitSeasonPass" value="ADD BOOKING">
+                </form>
+            </div>
+        </section>
+
+        <section id="add-unlimited-pass-window">
+            <div id="pop-up-top-menu">
+                <h3 id="pop-up-title">Unlimited Pass - {{user_data["First Name"]}} {{user_data["Last Name"]}}</h3>
+
+                <button class="close-button" onclick=hideBooking()>
+                    
+                    <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="m256-168-88-88 224-224-224-224 88-88 224 224 224-224 88 88-224 224 224 224-88 88-224-224-224 224Z"/></svg>                    
+                </button>
+            </div>
+
+            <div id="add-booking-container">
+                <form method="post", action="/admin-add-booking/unlimited/profile?uid={{ userID }}">
+                    <p class="add-booking-dates-subtitle">Start Date:</p>
+                    <input id="day-pass-start-date" type="date" name="startDate">
+                    <input class="add-booking-submit" type="submit" name="submitUnlimitedPass" value="ADD BOOKING">
+                </form>
             </div>
         </section>
 

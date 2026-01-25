@@ -237,7 +237,7 @@
     padding: 15px;
 }
 
-#edit-user-top-menu{
+#pop-up-top-menu{
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -428,15 +428,183 @@
     padding: 15px;
 }
 
-#contact-top-menu{
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-
-    padding-bottom: 20px;
-}
-
 #contact-container p{
     font-size: 40px;
     margin: 0px;
+}
+
+#add-booking-type-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 230px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+.add-booking-type-button{
+    display: block;
+    margin: 3px 0px;
+
+    width: 100%;
+
+    border-radius: 2rem;
+
+    border-style: none;
+
+    background-color: #182041;
+
+    cursor: pointer;
+}
+
+.add-booking-type-button:hover{
+    background-color: #263056;
+}
+
+.add-booking-type-button p{
+    margin: 0px;
+    padding: 5px 0px;
+
+    font-size: 30px;
+    color: white;
+}
+
+#add-day-pass-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 230px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+.add-booking-dates-subtitle{
+    font-size: 35px;
+    font-weight: lighter;
+
+    padding: 0px;
+    margin: 0px;
+}
+
+#day-pass-start-date{
+    display: block;
+    box-sizing: border-box;
+
+    width: 100%;
+
+    font-size: 30px;
+
+    border-radius: 2rem;
+    padding: 2px 5px;
+
+    margin-bottom: 20px;
+}
+
+.add-booking-submit{
+    display: block;
+
+    width: 100%;
+    background-color: #182041;
+
+    border-radius: 2rem;
+    color: white;
+    border-style: none;
+
+    padding: 2px;
+    margin: 0px;
+
+    font-size: 35px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.add-booking-submit:hover{
+    background-color: #263056;
+}
+
+#add-season-pass-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 325px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
+}
+
+#add-unlimited-pass-window{
+    display: none;
+    flex-direction: column;
+
+    width: 750px;
+    height: 230px;
+
+    position: fixed;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    z-index: 999;
+
+    border-radius: 3rem;
+    border-color: black;
+    border-width: 10px;
+    border-style: solid;
+
+    background-color: white;
+
+    margin: auto;
+    padding: 15px;
 }
