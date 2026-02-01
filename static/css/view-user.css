@@ -148,14 +148,21 @@
 
 
 #right-column{
+    display: flex;
+    flex-direction: column;
     width: 25%;
+    min-width: 300px;
     margin-top: 15px;
     padding: 20px;
     padding-top: 0px;
+
+    align-items: center;
 }
 
 #profile-picture{
-    width: 100%;
+    object-fit: cover;
+    width: 300px;
+    height: 300px;
     border-radius: 100%;
 }
 
@@ -204,10 +211,12 @@
 
 .non-functional-buttons{
     display: none;
+    width: 100%;
 }
 
 .functional-buttons{
     display: block;
+    width: 100%;
 }
 
 
