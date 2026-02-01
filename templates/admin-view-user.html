@@ -21,7 +21,7 @@
                     <ul class="navigation-list">
                         <li class="navigation-item"><a href="./admin-dashboard" class="nav-button">Dashboard</a></li>
                         <li class="navigation-item"><a href="./admin-users" class="nav-button-current">Users</a></li>
-                        <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li>
+                        <!-- <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li> -->
                         <!-- TODO: Stretch target - <li class="navigation-item"><a href="blog-overviews.html" class="nav-button">Search</a></li> -->
 
                         <!-- SIDE BAR
@@ -87,7 +87,9 @@
 
                                 <div class="car-box-right">
                                     <img class="car-image" src="static/userImages/car/{{ car[4] }}" alt="Car image">
-                                    <input class="delete-car" type="image" src="static/img/delete.png" alt="submit" value="" id="delete-{{ car[0] }}">
+                                    <form name="deleteCar" method="post" action="/admin-delete-car?uid={{ userID }}&cid={{ car[0] }}">
+                                        <input class="delete-car" type="image" src="static/img/delete.png" alt="submit" value="" name="delete">
+                                    </form>
                                 </div>
                             </div>
                         {% endfor %}
@@ -189,7 +191,7 @@
                 </button>
             </div>
 
-            <form id="edit-user-form" method="post", action="/admin-edit-user?uid={{ userID }}">
+            <form id="edit-user-form" method="post", action="/admin-edit-user?uid={{ userID }}" enctype="multipart/form-data">
                 <div id="edit-user-left-column">
                     <div id="names-inputs">
                         <div>
@@ -206,7 +208,7 @@
                     <h4 class="edit-user-subtitle">Email:</h4>
                     <input class="edit-user-text-input" name="inputEmail" type="text" value="{{user_data['Email']}}">
 
-                    <h4 class="edit-user-subtitle">Phone:</h4>
+                    <h4 class="edit-user-subtitle">Phone (Optional):</h4>
                     <input class="edit-user-text-input" name="inputPhone" type="text" value="{{user_data['Phone']}}">
 
                     <h4 class="edit-user-subtitle">Type:</h4>
@@ -252,7 +254,7 @@
                     </label>
                     <input id="imageUpload" type="file" name="profilePicture" accept="image/*">
 
-                    <input name="submitResetPassword" id="edit-user-submit-button" type="submit" value="RESET PASSWORD">
+                    <!-- <input name="submitResetPassword" id="edit-user-submit-button" type="submit" value="RESET PASSWORD"> TODO: Implement when adding user portal -->
                     <input name="submitEditUser" id="edit-user-submit-button" type="submit" value="SAVE">
                 </div>
             </form>
@@ -370,7 +372,7 @@
                 </button>
             </div>
 
-            <form id="add-car-form" method="post", action="/admin-add-car?uid={{ userID }}">
+            <form id="add-car-form" method="post", action="/admin-add-car?uid={{ userID }}" enctype="multipart/form-data">
                 <div id="add-car-columns">
                     <div id="edit-user-left-column">
                         <p class="add-car-subtitle">Registration:</p>
@@ -384,13 +386,13 @@
                     </div>
 
                     <div id="edit-user-right-column">
-                        <label for="imageUpload" id="custom-car-image-upload">
+                        <label for="carImageUpload" id="custom-car-image-upload">
                             <div id="image-upload-content">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
                                 <p>Add Image</p>
                             </div>
                         </label>
-                        <input id="imageUpload" type="file" name="carImage" accept="image/*">
+                        <input id="carImageUpload" type="file" name="carImage" accept="image/*">
 
                     </div>
                 </div>

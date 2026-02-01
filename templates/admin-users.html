@@ -21,7 +21,7 @@
                     <ul class="navigation-list">
                         <li class="navigation-item"><a href="./admin-dashboard" class="nav-button">Dashboard</a></li>
                         <li class="navigation-item"><a href="#" class="nav-button-current">Users</a></li>
-                        <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li>
+                        <!-- <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li> -->
                         <!-- TODO: Stretch target - <li class="navigation-item"><a href="blog-overviews.html" class="nav-button">Search</a></li> -->
 
                         <!-- SIDE BAR
@@ -95,7 +95,7 @@
                 </button>
             </div>
 
-            <form id="add-user-form" method="post">
+            <form id="add-user-form" method="post" action="/admin-add-user" enctype="multipart/form-data">
                 <div id="add-user-left-column">
                     <div id="names-inputs">
                         <div>
@@ -112,7 +112,7 @@
                     <h4 class="add-user-subtitle">Email:</h4>
                     <input class="add-user-text-input" name="inputEmail" type="text">
 
-                    <h4 class="add-user-subtitle">Phone:</h4>
+                    <h4 class="add-user-subtitle">Phone (Optional):</h4>
                     <input class="add-user-text-input" name="inputPhone" type="text">
 
                     <h4 class="add-user-subtitle">Type:</h4>

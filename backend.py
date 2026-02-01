@@ -134,6 +134,50 @@ class connection:
                 return users
             else:
                 raise Exception("ERROR: Could not connect to database")
+            
+    def next_user_ID(self) -> int:
+        """
+        Returns the next available userID.
+        """
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT userID FROM dbo.Users ORDER BY userID DESC")
+
+                past_user_ID = cursor.fetchone()
+                self.debugging_statement(f"{past_user_ID = }")
+
+                if past_user_ID != None:
+                    user_ID = int(past_user_ID[0]) + 1
+                else:
+                    user_ID = 1
+            else:
+                raise Exception("ERROR: Could not connect to database")
+
+        return user_ID
+    
+    def next_car_ID(self) -> int:
+        """
+        Returns the next available userID.
+        """
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT carID FROM dbo.Cars ORDER BY userID DESC")
+
+                past_car_ID = cursor.fetchone()
+                self.debugging_statement(f"{past_car_ID = }")
+
+                if past_car_ID != None:
+                    car_ID = int(past_car_ID[0]) + 1
+                else:
+                    car_ID = 1
+            else:
+                raise Exception("ERROR: Could not connect to database")
+
+        return car_ID
 
     def add_user(self, information:dict): # Dictionary IDs: First Name, Last Name, Email, Password, Phone, User Type, Image Title
         """
@@ -143,7 +187,7 @@ class connection:
         "First Name": "Akil",
         "Last Name": "Rameez",
         "User Type": "Student",
-        "Image Title": None,
+        "Image Title": "none.webp",
         "Email": "25cookeg899@collyers.ac.uk",
         "Password": "Password",
         "Phone": None
@@ -190,6 +234,19 @@ class connection:
                 return cars
             else:
                 raise Exception("ERROR: Could not connect to database")
+            
+    def delete_user_car(self, carID:str):
+        """
+        Deletes the specified car
+        """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("DELETE FROM dbo.Cars WHERE carID = ?", (carID))
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def get_all_user_bookings(self, userID:str):
         """
@@ -203,7 +260,7 @@ class connection:
                 today = datetime.date.today()
                 today_sql = today.strftime("%Y%m%d")
 
-                cursor.execute("SELECT bookingID, bookingType, startDate, endDate FROM dbo.Bookings WHERE userID = ? AND (endDate >= ? OR bookingType = 'UNLIMITED')", (userID, today_sql))
+                cursor.execute("SELECT bookingID, bookingType, startDate, endDate FROM dbo.Bookings WHERE userID = ? AND (endDate >= ? OR bookingType = 'UNLIMITED') ORDER BY startDate ASC", (userID, today_sql))
 
                 bookings = []
 
@@ -327,7 +384,9 @@ class connection:
         """
 
         if carDetails["Image Title"] == None:
-            carDetails["Image Title"] == "none.jpg"
+            carDetails["Image Title"] = "none.jpg"
+
+        self.debugging_statement(f"{carDetails = }")
 
         with self.connect() as connection:
             if connection is not None:
