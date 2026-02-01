@@ -144,7 +144,6 @@ def delete_booking():
 
 @app.route("/admin-add-user", methods = ["POST"]) # Triggered by the add user button in the users page
 def add_user():
-
     valid = True
 
     if not flask.request.form["inputPhone"].replace(" ", "").isnumeric(): # Checks phone is valid
@@ -169,6 +168,29 @@ def add_user():
     
     if valid:
         return redirect(f"/admin-users")
+    else:
+        return "", 304
+    
+@app.route("/admin-add-car", methods = ["POST"]) # Triggered by the add car button in the user profile page
+def add_car():
+    userID = flask.request.args.get("uid", default="None", type=str)
+
+    valid = True
+
+    if flask.request.form["registrationIn"] == None or flask.request.form["makeIn"] == None or flask.request.form["modelIn"] == None: # Catches when fields are not filled in
+        valid = False
+
+    if valid:
+        data.add_user_car(carDetails={
+            "userID": userID,
+            "Registration": flask.request.form["registrationIn"],
+            "Make": flask.request.form["makeIn"],
+            "Model": flask.request.form["modelIn"],
+            "Image Title": "none.jpg"
+        })
+    
+    if valid:
+        return redirect(f"/admin-view-user?uid={userID}")
     else:
         return "", 304
     
