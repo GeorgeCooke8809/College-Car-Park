@@ -91,11 +91,38 @@ def add_booking(bookingType, referer):
     userID = flask.request.args.get("uid", default="None", type=str)
 
     if bookingType == "day":
-        pass
+        date = datetime.date.strptime(flask.request.form["startDate"], "%Y-%m-%d")
+        date = date.strftime("%d/%m/%Y")
+
+        data.add_user_booking({
+            "userID":userID,
+            "Booking Type": "DAY",
+            "Start Date": date,
+            "End Date": date
+        })
     elif bookingType == "season":
-        pass
+        start_date = datetime.date.strptime(flask.request.form["startDate"], "%Y-%m-%d")
+        start_date = start_date.strftime("%d/%m/%Y")
+
+        end_date = datetime.date.strptime(flask.request.form["endDate"], "%Y-%m-%d")
+        end_date = end_date.strftime("%d/%m/%Y")
+
+        data.add_user_booking({
+            "userID":userID,
+            "Booking Type": "SEASON",
+            "Start Date": start_date,
+            "End Date": end_date
+        })
     elif bookingType == "unlimited":
-        pass
+        start_date = datetime.date.strptime(flask.request.form["startDate"], "%Y-%m-%d")
+        start_date = start_date.strftime("%d/%m/%Y")
+
+        data.add_user_booking({
+            "userID":userID,
+            "Booking Type": "UNLIMITED",
+            "Start Date": start_date,
+            "End Date": None
+        })
     else:
         raise Exception("ERROR - Invalid type of add bookings")
 
@@ -106,6 +133,23 @@ def add_booking(bookingType, referer):
         return redirect(f"/admin-view-user-bookings?uid={userID}")
     else:
         return redirect(f"/admin-dashboard")
+    
+@app.route("/admin-delete-booking", methods = ["POST"]) # Triggered by the delete booking button in the admin view bookings page
+def delete_booking():
+    bookingID = flask.request.args.get("bid", default="None", type=str)
+    userID = flask.request.args.get("uid", default="None", type=str)
+
+    data.delete_booking(bookingID)
+    return redirect(f"/admin-view-user-bookings?uid={userID}")
+
+@app.route("/admin-print-booking", methods = ["POST"]) # Triggered by the print booking button in the admin view bookings page
+def print_booking():
+    bookingID = flask.request.args.get("bid", default="None", type=str)
+
+    data.generate_ticket_PDF(bookingID)
+
+    return flask.send_file("Ticket.pdf", "application/pdf", as_attachment=True, download_name="Ticket.pdf")
+
 
 @app.route("/admin-edit-user", methods=["POST"]) # Triggered by the edit user button in the admin view user page
 def admin_edit_user():

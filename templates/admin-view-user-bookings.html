@@ -21,7 +21,7 @@
                     <ul class="navigation-list">
                         <li class="navigation-item"><a href="./admin-dashboard" class="nav-button">Dashboard</a></li>
                         <li class="navigation-item"><a href="./admin-users" class="nav-button-current">Users</a></li>
-                        <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li>
+                        <!-- <li class="navigation-item"><a href="./admin-pending" class="nav-button">Pending Requests</a></li> -->
                         <!-- TODO: Stretch target - <li class="navigation-item"><a href="blog-overviews.html" class="nav-button">Search</a></li> -->
 
                         <!-- SIDE BAR
@@ -56,13 +56,17 @@
                     <h3 class="date-line">{{ booking[1] }}</h3>
 
                     <div class="booking-right-side">
-                        <button class="booking-button"> <!-- TODO: add functionality for delete booking button -->
-                            <svg class="booking-svg" xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#000000"><path d="M269-86q-53 0-89.5-36.5T143-212v-497H80v-126h257v-63h284v63h259v126h-63v497q0 53-36.5 89.5T691-86H269Zm422-623H269v497h422v-497ZM342-281h103v-360H342v360Zm173 0h103v-360H515v360ZM269-709v497-497Z"/></svg>                        
-                        </button>
+                        <form id="deleteButton" method="post" action="/admin-delete-booking?bid={{ booking[0] }}&uid={{ userID }}">
+                            <button class="booking-button" type="submit" name="deleteButton"> <!-- TODO: add functionality for delete booking button -->
+                                <svg class="booking-svg" xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#000000"><path d="M269-86q-53 0-89.5-36.5T143-212v-497H80v-126h257v-63h284v63h259v126h-63v497q0 53-36.5 89.5T691-86H269Zm422-623H269v497h422v-497ZM342-281h103v-360H342v360Zm173 0h103v-360H515v360ZM269-709v497-497Z"/></svg>                        
+                            </button>
+                        </form>
 
-                        <button class="booking-button"> <!-- TODO: add functionality to print booking button -->
-                            <svg xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#000000"><path d="M628-674v-74H332v74H206v-200h548v200H628ZM172-548h616-616Zm526 131q23 0 39-15.81 16-15.82 16-39.19 0-23-15.81-39.5T698-528q-23 0-39.5 16.5T642-472q0 23 16.5 39t39.5 16Zm-70 229v-83H332v83h296ZM754-69H206v-183H46v-268q0-64 44.04-109T197-674h566q64.17 0 107.59 45Q914-584 914-520v268H754v183Zm34-309v-144q0-11.05-7.47-18.53Q773.05-548 762-548H197q-10.62 0-17.81 8.5Q172-531 172-520v142h34v-19h548v19h34Z"/></svg>                        
-                        </button>
+                        <form id="printButton" method="post" action="/admin-print-booking?bid={{ booking[0] }}">
+                            <button class="booking-button" type="submit" name="printButton"> <!-- TODO: add functionality to print booking button -->
+                                <svg xmlns="http://www.w3.org/2000/svg" height="75px" viewBox="0 -960 960 960" width="75px" fill="#000000"><path d="M628-674v-74H332v74H206v-200h548v200H628ZM172-548h616-616Zm526 131q23 0 39-15.81 16-15.82 16-39.19 0-23-15.81-39.5T698-528q-23 0-39.5 16.5T642-472q0 23 16.5 39t39.5 16Zm-70 229v-83H332v83h296ZM754-69H206v-183H46v-268q0-64 44.04-109T197-674h566q64.17 0 107.59 45Q914-584 914-520v268H754v183Zm34-309v-144q0-11.05-7.47-18.53Q773.05-548 762-548H197q-10.62 0-17.81 8.5Q172-531 172-520v142h34v-19h548v19h34Z"/></svg>                        
+                            </button>
+                        </form>
                     </div>
                 </div>
            {% endfor %}

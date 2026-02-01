@@ -203,7 +203,7 @@ class connection:
                 today = datetime.date.today()
                 today_sql = today.strftime("%Y%m%d")
 
-                cursor.execute("SELECT bookingID, bookingType, startDate, endDate FROM dbo.Bookings WHERE userID = ? AND (endDate >= ? OR bookingType = 'UNLIMITED')", (userID, today_sql))
+                cursor.execute("SELECT bookingID, bookingType, startDate, endDate FROM dbo.Bookings WHERE userID = ? AND (endDate >= ? OR bookingType = 'UNLIMITED') ORDER BY startDate ASC", (userID, today_sql))
 
                 bookings = []
 
