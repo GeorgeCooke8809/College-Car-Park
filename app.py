@@ -142,6 +142,15 @@ def delete_booking():
     data.delete_booking(bookingID)
     return redirect(f"/admin-view-user-bookings?uid={userID}")
 
+@app.route("/admin-delete-car", methods = ["POST"]) # Triggered by the delete car button in the user profile page
+def delete_car():
+    userID = flask.request.args.get("uid", default="None", type=str)
+    carId = flask.request.args.get("cid", default="None", type=str)
+
+    data.delete_user_car(carID=carId)
+
+    return redirect(f"/admin-view-user?uid={userID}")
+
 @app.route("/admin-add-user", methods = ["POST"]) # Triggered by the add user button in the users page
 def add_user():
     valid = True

@@ -87,7 +87,9 @@
 
                                 <div class="car-box-right">
                                     <img class="car-image" src="static/userImages/car/{{ car[4] }}" alt="Car image">
-                                    <input class="delete-car" type="image" src="static/img/delete.png" alt="submit" value="" id="delete-{{ car[0] }}">
+                                    <form name="deleteCar" method="post" action="/admin-delete-car?uid={{ userID }}&cid={{ car[0] }}">
+                                        <input class="delete-car" type="image" src="static/img/delete.png" alt="submit" value="" name="delete">
+                                    </form>
                                 </div>
                             </div>
                         {% endfor %}

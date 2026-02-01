@@ -190,6 +190,19 @@ class connection:
                 return cars
             else:
                 raise Exception("ERROR: Could not connect to database")
+            
+    def delete_user_car(self, carID:str):
+        """
+        Deletes the specified car
+        """
+
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("DELETE FROM dbo.Cars WHERE carID = ?", (carID))
+            else:
+                raise Exception("ERROR: Could not connect to database")
 
     def get_all_user_bookings(self, userID:str):
         """
