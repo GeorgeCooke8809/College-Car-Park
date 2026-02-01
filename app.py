@@ -2,6 +2,7 @@ import flask
 from flask import Flask, request, redirect, url_for, send_from_directory
 from backend import connection
 import datetime
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 image_upload_folder = "static/userImages"
@@ -155,7 +156,7 @@ def delete_car():
 def add_user():
     valid = True
 
-    if not flask.request.form["inputPhone"].replace(" ", "").isnumeric(): # Checks phone is valid
+    if not flask.request.form["inputPhone"].replace(" ", "").isnumeric() and flask.request.form["inputPhone"] != "": # Checks phone is valid
         valid = False
 
     if flask.request.form["inputFirstName"] == None or flask.request.form["inputLastName"] == None or flask.request.form["inputEmail"] == None: # Catches when fields are not filled in
@@ -163,11 +164,24 @@ def add_user():
 
     try: # Catches no user type
         if valid:
+
+            if "profilePicture" not in request.files:
+                image_path = None
+                print("YOU NEED THE FIRST IF")
+                print(f"{request.files = }")
+            else:
+                file = request.files["profilePicture"]
+                if file.filename == "":
+                    image_path = None
+                else:
+                    image_path = f"{data.next_user_ID()}.{file.filename.rsplit('.', 1)[1].lower()}"
+                    file.save(f"./static/userImages/profile/{image_path}")
+
             data.add_user({
                 "First Name": flask.request.form["inputFirstName"],
                 "Last Name": flask.request.form["inputLastName"],
                 "User Type": flask.request.form["userType"],
-                "Image Title": "none.webp", # TODO: get images
+                "Image Title": image_path, # TODO: get images
                 "Email": flask.request.form["inputEmail"],
                 "Password": "password123",
                 "Phone": flask.request.form["inputPhone"]

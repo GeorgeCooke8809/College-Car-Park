@@ -134,6 +134,28 @@ class connection:
                 return users
             else:
                 raise Exception("ERROR: Could not connect to database")
+            
+    def next_user_ID(self) -> int:
+        """
+        Returns the next available userID.
+        """
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT userID FROM dbo.Users ORDER BY userID DESC")
+
+                past_user_ID = cursor.fetchone()
+                self.debugging_statement(f"{past_user_ID = }")
+
+                if past_user_ID != None:
+                    user_ID = int(past_user_ID[0]) + 1
+                else:
+                    user_ID = 1
+            else:
+                raise Exception("ERROR: Could not connect to database")
+
+        return user_ID
 
     def add_user(self, information:dict): # Dictionary IDs: First Name, Last Name, Email, Password, Phone, User Type, Image Title
         """
