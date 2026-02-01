@@ -142,6 +142,67 @@ def delete_booking():
     data.delete_booking(bookingID)
     return redirect(f"/admin-view-user-bookings?uid={userID}")
 
+@app.route("/admin-add-user", methods = ["POST"]) # Triggered by the add user button in the users page
+def add_user():
+
+    valid = True
+
+    if not flask.request.form["inputPhone"].replace(" ", "").isnumeric(): # Checks phone is valid
+        valid = False
+
+    if flask.request.form["inputFirstName"] == None or flask.request.form["inputLastName"] == None or flask.request.form["inputEmail"] == None: # Catches when fields are not filled in
+        valid = False
+
+    try: # Catches no user type
+        if valid:
+            data.add_user({
+                "First Name": flask.request.form["inputFirstName"],
+                "Last Name": flask.request.form["inputLastName"],
+                "User Type": flask.request.form["userType"],
+                "Image Title": "none.webp", # TODO: get images
+                "Email": flask.request.form["inputEmail"],
+                "Password": "password123",
+                "Phone": flask.request.form["inputPhone"]
+            })
+    except:
+        pass
+    
+    if valid:
+        return redirect(f"/admin-users")
+    else:
+        return "", 304
+    
+@app.route("/admin-edit-user", methods = ["POST"]) # Triggered by the add user button in the users page
+def edit_user():
+    userID = flask.request.args.get("uid", default="None", type=str)
+
+    valid = True
+
+    if not flask.request.form["inputPhone"].replace(" ", "").isnumeric(): # Checks phone is valid
+        valid = False
+
+    if flask.request.form["inputFirstName"] == None or flask.request.form["inputLastName"] == None or flask.request.form["inputEmail"] == None: # Catches when fields are not filled in
+        valid = False
+
+    try: # Catches no user type
+        if valid and userID != None:
+            data.edit_user(
+                userID=userID,
+                fName=flask.request.form["inputFirstName"],
+                lName=flask.request.form["inputLastName"],
+                userType=flask.request.form["userType"],
+                profilePictureTitle="none.webp",
+                email=flask.request.form["inputEmail"],
+                phone=flask.request.form["inputPhone"]
+            )
+    except:
+        pass
+    
+    if valid:
+        return redirect(f"/admin-view-user?uid={userID}")
+    else:
+        return "", 304
+
 @app.route("/admin-print-booking", methods = ["POST"]) # Triggered by the print booking button in the admin view bookings page
 def print_booking():
     bookingID = flask.request.args.get("bid", default="None", type=str)

@@ -143,7 +143,7 @@ class connection:
         "First Name": "Akil",
         "Last Name": "Rameez",
         "User Type": "Student",
-        "Image Title": None,
+        "Image Title": "none.webp",
         "Email": "25cookeg899@collyers.ac.uk",
         "Password": "Password",
         "Phone": None
