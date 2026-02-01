@@ -372,7 +372,7 @@
                 </button>
             </div>
 
-            <form id="add-car-form" method="post", action="/admin-add-car?uid={{ userID }}">
+            <form id="add-car-form" method="post", action="/admin-add-car?uid={{ userID }}" enctype="multipart/form-data">
                 <div id="add-car-columns">
                     <div id="edit-user-left-column">
                         <p class="add-car-subtitle">Registration:</p>
@@ -386,13 +386,13 @@
                     </div>
 
                     <div id="edit-user-right-column">
-                        <label for="imageUpload" id="custom-car-image-upload">
+                        <label for="carImageUpload" id="custom-car-image-upload">
                             <div id="image-upload-content">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000"><path d="M417-417H166v-126h251v-251h126v251h251v126H543v251H417v-251Z"/></svg>
                                 <p>Add Image</p>
                             </div>
                         </label>
-                        <input id="imageUpload" type="file" name="carImage" accept="image/*">
+                        <input id="carImageUpload" type="file" name="carImage" accept="image/*">
 
                     </div>
                 </div>

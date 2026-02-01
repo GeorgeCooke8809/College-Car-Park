@@ -156,6 +156,28 @@ class connection:
                 raise Exception("ERROR: Could not connect to database")
 
         return user_ID
+    
+    def next_car_ID(self) -> int:
+        """
+        Returns the next available userID.
+        """
+        with self.connect() as connection:
+            if connection is not None:
+                cursor = connection.cursor()
+
+                cursor.execute("SELECT carID FROM dbo.Cars ORDER BY userID DESC")
+
+                past_car_ID = cursor.fetchone()
+                self.debugging_statement(f"{past_car_ID = }")
+
+                if past_car_ID != None:
+                    car_ID = int(past_car_ID[0]) + 1
+                else:
+                    car_ID = 1
+            else:
+                raise Exception("ERROR: Could not connect to database")
+
+        return car_ID
 
     def add_user(self, information:dict): # Dictionary IDs: First Name, Last Name, Email, Password, Phone, User Type, Image Title
         """
@@ -362,7 +384,9 @@ class connection:
         """
 
         if carDetails["Image Title"] == None:
-            carDetails["Image Title"] == "none.jpg"
+            carDetails["Image Title"] = "none.jpg"
+
+        self.debugging_statement(f"{carDetails = }")
 
         with self.connect() as connection:
             if connection is not None:

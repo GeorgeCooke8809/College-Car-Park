@@ -9,7 +9,7 @@ image_upload_folder = "static/userImages"
 app.config["UPLOAD_FOLDER"] = image_upload_folder
 
 global data
-data = connection()
+data = connection(debugging=True)
 
 @app.route("/", methods = ["GET"])
 def index(): # TODO: implement select user type
@@ -193,28 +193,6 @@ def add_user():
     else:
         return "", 304
     
-@app.route("/admin-add-car", methods = ["POST"]) # Triggered by the add car button in the user profile page
-def add_car():
-    userID = flask.request.args.get("uid", default="None", type=str)
-
-    valid = True
-
-    if flask.request.form["registrationIn"] == None or flask.request.form["makeIn"] == None or flask.request.form["modelIn"] == None: # Catches when fields are not filled in
-        valid = False
-
-        data.add_user_car(carDetails={
-            "userID": userID,
-            "Registration": flask.request.form["registrationIn"],
-            "Make": flask.request.form["makeIn"],
-            "Model": flask.request.form["modelIn"],
-            "Image Title": "none.jpg"
-        })
-    
-    if valid:
-        return redirect(f"/admin-view-user?uid={userID}")
-    else:
-        return "", 304
-    
 @app.route("/admin-edit-user", methods = ["POST"]) # Triggered by the add user button in the users page
 def edit_user():
     userID = flask.request.args.get("uid", default="None", type=str)
@@ -276,7 +254,37 @@ def admin_edit_user():
 def admin_add_car():
     userID = flask.request.args.get("uid", default="None", type=str)
 
-    return "", 304
+    valid = True
+
+    if flask.request.form["registrationIn"] == None or flask.request.form["makeIn"] == None or flask.request.form["modelIn"] == None: # Catches when fields are not filled in
+        valid = False
+
+    if valid:
+        print(f"{request.files = }")
+        if "carImage" not in request.files:
+                image_path = None
+                print(f"{request.files = }")
+                print("NONE SUBMITTED")
+        else:
+            file = request.files["carImage"]
+            if file.filename == "":
+                image_path = None
+            else:
+                image_path = f"{data.next_car_ID()}.{file.filename.rsplit('.', 1)[1].lower()}"
+                file.save(f"./static/userImages/car/{image_path}")
+
+        data.add_user_car(carDetails={
+            "userID": userID,
+            "Registration": flask.request.form["registrationIn"],
+            "Make": flask.request.form["makeIn"],
+            "Model": flask.request.form["modelIn"],
+            "Image Title": image_path
+        })
+    
+    if valid:
+        return redirect(f"/admin-view-user?uid={userID}")
+    else:
+        return "", 304
     
 @app.route("/admin-view-user-bookings", methods = ["GET"])
 def view_user_bookings():
