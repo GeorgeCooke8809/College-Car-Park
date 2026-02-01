@@ -167,7 +167,6 @@ def add_user():
 
             if "profilePicture" not in request.files:
                 image_path = None
-                print("YOU NEED THE FIRST IF")
                 print(f"{request.files = }")
             else:
                 file = request.files["profilePicture"]
@@ -203,7 +202,6 @@ def add_car():
     if flask.request.form["registrationIn"] == None or flask.request.form["makeIn"] == None or flask.request.form["modelIn"] == None: # Catches when fields are not filled in
         valid = False
 
-    if valid:
         data.add_user_car(carDetails={
             "userID": userID,
             "Registration": flask.request.form["registrationIn"],
@@ -223,7 +221,7 @@ def edit_user():
 
     valid = True
 
-    if not flask.request.form["inputPhone"].replace(" ", "").isnumeric(): # Checks phone is valid
+    if not flask.request.form["inputPhone"].replace(" ", "").isnumeric() and flask.request.form["inputPhone"] != "": # Checks phone is valid
         valid = False
 
     if flask.request.form["inputFirstName"] == None or flask.request.form["inputLastName"] == None or flask.request.form["inputEmail"] == None: # Catches when fields are not filled in
@@ -231,12 +229,23 @@ def edit_user():
 
     try: # Catches no user type
         if valid and userID != None:
+            if "profilePicture" not in request.files:
+                image_path = None
+                print(f"{request.files = }")
+            else:
+                file = request.files["profilePicture"]
+                if file.filename == "":
+                    image_path = None
+                else:
+                    image_path = f"{userID}.{file.filename.rsplit('.', 1)[1].lower()}"
+                    file.save(f"./static/userImages/profile/{image_path}")
+
             data.edit_user(
                 userID=userID,
                 fName=flask.request.form["inputFirstName"],
                 lName=flask.request.form["inputLastName"],
                 userType=flask.request.form["userType"],
-                profilePictureTitle="none.webp",
+                profilePictureTitle=image_path,
                 email=flask.request.form["inputEmail"],
                 phone=flask.request.form["inputPhone"]
             )
