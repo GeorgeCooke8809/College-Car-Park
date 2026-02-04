@@ -180,7 +180,7 @@ def add_user():
                 "First Name": flask.request.form["inputFirstName"],
                 "Last Name": flask.request.form["inputLastName"],
                 "User Type": flask.request.form["userType"],
-                "Image Title": image_path, # TODO: get images
+                "Image Title": image_path,
                 "Email": flask.request.form["inputEmail"],
                 "Password": "password123",
                 "Phone": flask.request.form["inputPhone"]

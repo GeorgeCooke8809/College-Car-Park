@@ -10,7 +10,6 @@ from reportlab.platypus import Spacer, Paragraph, Table, SimpleDocTemplate
 
 class connection:
     def __init__(self, debugging: bool = False):
-         self.data = None
          self.debugging = debugging
 
     def connect(self):
@@ -159,13 +158,13 @@ class connection:
     
     def next_car_ID(self) -> int:
         """
-        Returns the next available userID.
+        Returns the next available carID.
         """
         with self.connect() as connection:
             if connection is not None:
                 cursor = connection.cursor()
 
-                cursor.execute("SELECT carID FROM dbo.Cars ORDER BY userID DESC")
+                cursor.execute("SELECT carID FROM dbo.Cars ORDER BY carID DESC")
 
                 past_car_ID = cursor.fetchone()
                 self.debugging_statement(f"{past_car_ID = }")
