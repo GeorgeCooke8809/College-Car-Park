@@ -30,7 +30,7 @@ class connection:
         Array format: [[userID, User Name, User Status (e.g.: student)], ]
         """
 
-        with self.connect() as connection:
+        with self.connect() as connection: # used to prevent memory leaks if forgotten to close connection
             if connection is not None:
                 cursor = connection.cursor()
                 sql_date = f"{date[-4:]}{date[3:5]}{date[0:2]}"
@@ -39,7 +39,7 @@ class connection:
 
                 to_return_IDs = cursor.fetchall()
 
-                to_return_IDs_array = [item for item in to_return_IDs]
+                to_return_IDs_array = [item for item in to_return_IDs] # the IDs for all of the user information that will be searched from Users table
 
                 to_return_array = []
 
@@ -99,7 +99,6 @@ class connection:
                 return f"Season Pass From {start_date_readable} to {end_date_readable}{state}"
             else:
                     return "No Pending Bookings"
-
 
     def get_all_users(self, type:list = ["STUDENT", "STAFF", "VISITOR"]):
         """
@@ -760,6 +759,8 @@ class connection:
 
 if __name__ == "__main__":
     # Enter debugging
-    debugger = connection(debugging=True)
+    data = connection(debugging=True)
 
-    print(debugger.get_all_date_bookings("14/01/2026"))
+    print(
+        data.update_maximum_capacity(300)
+    )

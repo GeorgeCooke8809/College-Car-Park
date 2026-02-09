@@ -5,28 +5,28 @@ import datetime
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-image_upload_folder = "static/userImages"
+image_upload_folder = "static/userImages" # This and the following line is used to upload images for cars and profile pictures when submitted by user
 app.config["UPLOAD_FOLDER"] = image_upload_folder
 
 global data
-data = connection(debugging=True)
+data = connection(debugging=True) # establishes connection to backend
 
 @app.route("/", methods = ["GET"])
-def index(): # TODO: implement select user type
+def index(): # This would have been used to select the user type and login had I had more time
     return redirect("./admin-dashboard", code=302)
 
 @app.route("/admin-dashboard", methods = ["GET", "POST"])
-def admin_dashboard(): # TODO: split into separate get and post functions
+def admin_dashboard(): # TODO: split into separate get and post functions?
     if flask.request.method == "GET":
-        date = flask.request.args.get("date", default="None", type=str)
+        date = flask.request.args.get("date", default="None", type=str) # Gets the value for date after the ? in URL, used to show bookings for specific dates
 
         if date == "None":
             today = datetime.date.today()
             date = today.strftime("%d/%m/%Y")
         else:
-            date=f"{date[0:2]}/{date[2:4]}/{date[-4:]}"
+            date=f"{date[0:2]}/{date[2:4]}/{date[-4:]}" # Converts date to favorable format for backend
 
-        bookings = data.get_all_date_bookings(date)
+        bookings = data.get_all_date_bookings(date) # references backend
 
         return flask.render_template("admin-dashboard.html",
                                     current_date=date,
@@ -35,8 +35,8 @@ def admin_dashboard(): # TODO: split into separate get and post functions
                                     bookings=bookings,
                                     )
     
-    elif flask.request.method == "POST": # Triggered when a button is pressed
-        if "backDate.x" in flask.request.form:
+    elif flask.request.method == "POST": # Triggered when a button is pressed on the admin dashboard page
+        if "backDate.x" in flask.request.form: # Checks if the button pressed is to go back a day
             date = flask.request.args.get("date", default="None", type=str)
             
             if date != "None":
@@ -44,11 +44,11 @@ def admin_dashboard(): # TODO: split into separate get and post functions
             else:
                 date = datetime.date.today()
 
-            new_date = date - datetime.timedelta(days=1)
+            new_date = date - datetime.timedelta(days=1) # gets the new date
             new_date = new_date.strftime("%d%m%Y")
 
             return redirect(f"./admin-dashboard?date={new_date}", code=302)
-        elif "forwardDate.x" in flask.request.form:
+        elif "forwardDate.x" in flask.request.form: # Checks if the button pressed is to go forward a day
             date = flask.request.args.get("date", default="None", type=str)
             
             if date != "None":
@@ -56,17 +56,17 @@ def admin_dashboard(): # TODO: split into separate get and post functions
             else:
                 date = datetime.date.today()
 
-            new_date = date + datetime.timedelta(days=1)
+            new_date = date + datetime.timedelta(days=1) # gets the new date
             new_date = new_date.strftime("%d%m%Y")
 
             return redirect(f"./admin-dashboard?date={new_date}", code=302)
         elif "submitNewSpaces" in flask.request.form:
             new_spaces = int(flask.request.form["newSpaces"])
-            data.update_maximum_capacity(new_spaces)
+            data.update_maximum_capacity(new_spaces) # updates number of maximum spaces
 
-            return redirect(url_for("admin_dashboard"))
+            return redirect(url_for("admin_dashboard")) # refreshes page
 
-        return "", 304
+        return "", 304 # catch all for if button pressed is not expected to prevent crash
 
 @app.route("/admin-users", methods = ["GET"])
 def users():
@@ -100,7 +100,7 @@ def add_booking(bookingType, referer):
             "Booking Type": "DAY",
             "Start Date": date,
             "End Date": date
-        })
+        }) # passes data to backend
     elif bookingType == "season":
         start_date = datetime.date.strptime(flask.request.form["startDate"], "%Y-%m-%d")
         start_date = start_date.strftime("%d/%m/%Y")
@@ -113,7 +113,7 @@ def add_booking(bookingType, referer):
             "Booking Type": "SEASON",
             "Start Date": start_date,
             "End Date": end_date
-        })
+        }) # passes to backend
     elif bookingType == "unlimited":
         start_date = datetime.date.strptime(flask.request.form["startDate"], "%Y-%m-%d")
         start_date = start_date.strftime("%d/%m/%Y")
@@ -123,11 +123,12 @@ def add_booking(bookingType, referer):
             "Booking Type": "UNLIMITED",
             "Start Date": start_date,
             "End Date": None
-        })
-    else:
+        }) # passes to backend
+    else: # catch all
         raise Exception("ERROR - Invalid type of add bookings")
 
 
+    # returns to the page the user came from (bookings can be added from user profile or user bookings)
     if referer == "profile":
         return redirect(f"/admin-view-user?uid={userID}")
     elif referer == "bookings":
@@ -141,7 +142,7 @@ def delete_booking():
     userID = flask.request.args.get("uid", default="None", type=str)
 
     data.delete_booking(bookingID)
-    return redirect(f"/admin-view-user-bookings?uid={userID}")
+    return redirect(f"/admin-view-user-bookings?uid={userID}") # refreshes page
 
 @app.route("/admin-delete-car", methods = ["POST"]) # Triggered by the delete car button in the user profile page
 def delete_car():
@@ -150,7 +151,7 @@ def delete_car():
 
     data.delete_user_car(carID=carId)
 
-    return redirect(f"/admin-view-user?uid={userID}")
+    return redirect(f"/admin-view-user?uid={userID}") # refreshes page
 
 @app.route("/admin-add-user", methods = ["POST"]) # Triggered by the add user button in the users page
 def add_user():
@@ -164,17 +165,16 @@ def add_user():
 
     try: # Catches no user type
         if valid:
-
-            if "profilePicture" not in request.files:
+            if "profilePicture" not in request.files: # makes image path None so that placeholder image can be used if none submitted
                 image_path = None
                 print(f"{request.files = }")
             else:
                 file = request.files["profilePicture"]
-                if file.filename == "":
-                    image_path = None
+                if file.filename == "": # blank image is made if none is submitted
+                    image_path = None 
                 else:
                     image_path = f"{data.next_user_ID()}.{file.filename.rsplit('.', 1)[1].lower()}"
-                    file.save(f"./static/userImages/profile/{image_path}")
+                    file.save(f"./static/userImages/profile/{image_path}") # saves image
 
             data.add_user({
                 "First Name": flask.request.form["inputFirstName"],
@@ -184,16 +184,16 @@ def add_user():
                 "Email": flask.request.form["inputEmail"],
                 "Password": "password123",
                 "Phone": flask.request.form["inputPhone"]
-            })
+            }) # passes to backend
     except:
         pass
     
     if valid:
-        return redirect(f"/admin-users")
+        return redirect(f"/admin-users") # refreshes users page
     else:
-        return "", 304
+        return "", 304 # makes not refresh and keeps data if invalid entry
     
-@app.route("/admin-edit-user", methods = ["POST"]) # Triggered by the add user button in the users page
+@app.route("/admin-edit-user", methods = ["POST"]) # Triggered by the edit user button in the user profile page - see all comments above (very similar processing)
 def edit_user():
     userID = flask.request.args.get("uid", default="None", type=str)
 
@@ -243,7 +243,6 @@ def print_booking():
 
     return flask.send_file("Ticket.pdf", "application/pdf", as_attachment=True, download_name="Ticket.pdf")
 
-
 @app.route("/admin-edit-user", methods=["POST"]) # Triggered by the edit user button in the admin view user page
 def admin_edit_user():
     userID = flask.request.args.get("uid", default="None", type=str)
@@ -279,12 +278,12 @@ def admin_add_car():
             "Make": flask.request.form["makeIn"],
             "Model": flask.request.form["modelIn"],
             "Image Title": image_path
-        })
+        }) # passes to back end
     
     if valid:
-        return redirect(f"/admin-view-user?uid={userID}")
+        return redirect(f"/admin-view-user?uid={userID}") # refreshes window
     else:
-        return "", 304
+        return "", 304 # does not refresh window if invalid data
     
 @app.route("/admin-view-user-bookings", methods = ["GET"])
 def view_user_bookings():
