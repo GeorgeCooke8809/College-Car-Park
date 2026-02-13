@@ -139,13 +139,3 @@ body{
     text-align: center;
     padding: 10px;
 }
-
-@media only screen and (max-width: 1140px) {
-    .show-side-bar-button{
-        display: flex;
-    }
-
-    .navigation-item{
-        display: none;
-    }
-}

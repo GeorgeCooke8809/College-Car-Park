@@ -9,7 +9,7 @@ image_upload_folder = "static/userImages" # This and the following line is used 
 app.config["UPLOAD_FOLDER"] = image_upload_folder
 
 global data
-data = connection(debugging=True) # establishes connection to backend
+data = connection(debugging=True, server="PERSONAL") # establishes connection to backend
 
 @app.route("/", methods = ["GET"])
 def index(): # This would have been used to select the user type and login had I had more time

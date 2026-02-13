@@ -9,16 +9,27 @@ from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
 from reportlab.platypus import Spacer, Paragraph, Table, SimpleDocTemplate
 
 class connection:
-    def __init__(self, debugging: bool = False):
+    def __init__(self, debugging: bool = False, server: str = "COLLYERS"):
          self.debugging = debugging
+         self.server = server
 
     def connect(self):
-        cs = (
-                "Driver={ODBC Driver 18 for SQL Server};"
-                "Server=(localdb)\\CarPark;"
-                "Database=CarPark;"
-                "Trusted_Connection=yes;"
-            )
+        if self.server == "COLLYERS":
+            cs = (
+                    "Driver={SQL Server};"
+                    "Server=svr-cmp-01;"
+                    "Database=25CookeG899;"
+                    "Trusted_Connection=yes;"
+                )
+        elif self.server == "PERSONAL":
+            cs = (
+                    "Driver={ODBC Driver 18 for SQL Server};"
+                    "Server=(localdb)\\CarPark;"
+                    "Database=CarPark;"
+                    "Trusted_Connection=yes;"
+                )
+        else:
+            raise SystemError("ERROR - Invalid server type")
          
         self.debugging_statement("Connected to database...")
 
@@ -63,6 +74,13 @@ class connection:
         Used within the library to generate the strings used to describe booking dates.
         Example output: Jan 5th 2026 - Feb 13th 2026 (Current)
         """
+
+        if type(startDate) == str: # checks if running on school computers or mine
+            self.debugging_statement("Converting to datetime object")
+            startDate = datetime.date.strptime(startDate, "%Y-%m-%d") # This was not needed on my computer, I think it stems from the issue of this getting SQL dates as strings instead of datetime
+            
+            if endDate != None:
+                endDate = datetime.date.strptime(endDate, "%Y-%m-%d") # This was not needed on my computer, I think it stems from the issue of this getting SQL dates as strings instead of datetime
 
         self.debugging_statement(f"{bookingType = }")
 
@@ -475,6 +493,12 @@ class connection:
                 userID = booking_info[0]
                 bookingType = booking_info[1]
 
+                if type(booking_info[2]) == str: # Cathes if running on school servers or mine
+                    booking_info[2] = datetime.date.strptime(booking_info[2], "%Y-%m-%d") # This was not needed on my computer, I think it stems from the issue of this getting SQL dates as strings instead of datetime
+                    
+                    if booking_info[3] != None:
+                        booking_info[3] = datetime.date.strptime(booking_info[3], "%Y-%m-%d") # This was not needed on my computer, I think it stems from the issue of this getting SQL dates as strings instead of datetime
+
                 start_date_readable = booking_info[2].strftime("%B %d %Y")
 
                 if bookingType.upper() == "SEASON":
@@ -759,7 +783,7 @@ class connection:
 
 if __name__ == "__main__":
     # Enter debugging
-    data = connection(debugging=True)
+    data = connection(debugging=True, server="PERSONAL")
 
     print(
         data.update_maximum_capacity(300)
