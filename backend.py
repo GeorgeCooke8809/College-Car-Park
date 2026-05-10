@@ -9,17 +9,27 @@ from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
 from reportlab.platypus import Spacer, Paragraph, Table, SimpleDocTemplate
 
 class connection:
-    def __init__(self, debugging: bool = False):
-         self.data = None
+    def __init__(self, debugging: bool = False, server: str = "COLLYERS"):
          self.debugging = debugging
+         self.server = server
 
     def connect(self):
-        cs = (
-                "Driver={ODBC Driver 18 for SQL Server};"
-                "Server=(localdb)\\CarPark;"
-                "Database=CarPark;"
-                "Trusted_Connection=yes;"
-            )
+        if self.server == "COLLYERS":
+            cs = (
+                    "Driver={SQL Server};"
+                    "Server=svr-cmp-01;"
+                    "Database=25CookeG899;"
+                    "Trusted_Connection=yes;"
+                )
+        elif self.server == "PERSONAL":
+            cs = (
+                    "Driver={ODBC Driver 18 for SQL Server};"
+                    "Server=(localdb)\\CarPark;"
+                    "Database=CarPark;"
+                    "Trusted_Connection=yes;"
+                )
+        else:
+            raise SystemError("ERROR - Invalid server type")
          
         self.debugging_statement("Connected to database...")
 
@@ -31,7 +41,7 @@ class connection:
         Array format: [[userID, User Name, User Status (e.g.: student)], ]
         """
 
-        with self.connect() as connection:
+        with self.connect() as connection: # used to prevent memory leaks if forgotten to close connection
             if connection is not None:
                 cursor = connection.cursor()
                 sql_date = f"{date[-4:]}{date[3:5]}{date[0:2]}"
@@ -40,7 +50,7 @@ class connection:
 
                 to_return_IDs = cursor.fetchall()
 
-                to_return_IDs_array = [item for item in to_return_IDs]
+                to_return_IDs_array = [item for item in to_return_IDs] # the IDs for all of the user information that will be searched from Users table
 
                 to_return_array = []
 
@@ -64,6 +74,13 @@ class connection:
         Used within the library to generate the strings used to describe booking dates.
         Example output: Jan 5th 2026 - Feb 13th 2026 (Current)
         """
+
+        if type(startDate) == str: # checks if running on school computers or mine
+            self.debugging_statement("Converting to datetime object")
+            startDate = datetime.date.strptime(startDate, "%Y-%m-%d") # This was not needed on my computer, I think it stems from the issue of this getting SQL dates as strings instead of datetime
+            
+            if endDate != None:
+                endDate = datetime.date.strptime(endDate, "%Y-%m-%d") # This was not needed on my computer, I think it stems from the issue of this getting SQL dates as strings instead of datetime
 
         self.debugging_statement(f"{bookingType = }")
 
@@ -100,7 +117,6 @@ class connection:
                 return f"Season Pass From {start_date_readable} to {end_date_readable}{state}"
             else:
                     return "No Pending Bookings"
-
 
     def get_all_users(self, type:list = ["STUDENT", "STAFF", "VISITOR"]):
         """
@@ -159,13 +175,13 @@ class connection:
     
     def next_car_ID(self) -> int:
         """
-        Returns the next available userID.
+        Returns the next available carID.
         """
         with self.connect() as connection:
             if connection is not None:
                 cursor = connection.cursor()
 
-                cursor.execute("SELECT carID FROM dbo.Cars ORDER BY userID DESC")
+                cursor.execute("SELECT carID FROM dbo.Cars ORDER BY carID DESC")
 
                 past_car_ID = cursor.fetchone()
                 self.debugging_statement(f"{past_car_ID = }")
@@ -477,6 +493,12 @@ class connection:
                 userID = booking_info[0]
                 bookingType = booking_info[1]
 
+                if type(booking_info[2]) == str: # Cathes if running on school servers or mine
+                    booking_info[2] = datetime.date.strptime(booking_info[2], "%Y-%m-%d") # This was not needed on my computer, I think it stems from the issue of this getting SQL dates as strings instead of datetime
+                    
+                    if booking_info[3] != None:
+                        booking_info[3] = datetime.date.strptime(booking_info[3], "%Y-%m-%d") # This was not needed on my computer, I think it stems from the issue of this getting SQL dates as strings instead of datetime
+
                 start_date_readable = booking_info[2].strftime("%B %d %Y")
 
                 if bookingType.upper() == "SEASON":
@@ -761,6 +783,8 @@ class connection:
 
 if __name__ == "__main__":
     # Enter debugging
-    debugger = connection(debugging=True)
+    data = connection(debugging=True, server="PERSONAL")
 
-    print(debugger.get_all_date_bookings("14/01/2026"))
+    print(
+        data.update_maximum_capacity(300)
+    )
